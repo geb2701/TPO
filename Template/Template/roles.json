@@ -1,0 +1,40 @@
+{
+  "Template": {
+    "Roles": {
+      "Consultor": [
+        "PR_SS_CONS"
+      ],
+      "Operador": [
+        "PR_SS_OPER"
+      ],
+      "Supervisor": [
+        "PR_SS_SUP"
+      ]
+    },
+    "Permissions": {
+      "read": [
+        "Consultor",
+        "Operador",
+        "Supervisor"
+      ],
+      "create": [
+        "Operador"
+      ],
+      "update": [
+        "Operador"
+      ],
+      "propose": [
+        "Operador"
+      ],
+      "approve": [
+        "Supervisor"
+      ],
+      "decline": [
+        "Supervisor"
+      ],
+      "delete": [
+        "Operador"
+      ]
+    }
+  }
+}

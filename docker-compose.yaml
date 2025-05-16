@@ -1,0 +1,33 @@
+version: '3.7'
+
+services:
+  template-db:
+    image: mcr.microsoft.com/azure-sql-edge
+    restart: always
+    ports:
+      - '63878:1433'
+    environment:
+      - DB_USER=SA
+      - SA_PASSWORD=#localDockerPassword#
+      - DB_CONTAINER_NAME=dev_template
+      - ACCEPT_EULA=Y
+    volumes:
+      - template-data:/var/lib/sqlserver/data
+
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+# port mappings: https://www.jaegertracing.io/docs/1.32/getting-started/
+    ports:
+      - "63869:6831/udp"
+      - "63870:5775/udp"
+      - "63871:6832/udp"
+      - "63872:5778"
+      - "63873:16686"
+      - "63874:14250"
+      - "63875:14268"
+      - "63876:14269"
+      - "63877:9411"
+
+        
+volumes:
+  template-data:
