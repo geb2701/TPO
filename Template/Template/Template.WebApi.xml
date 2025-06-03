@@ -29,11 +29,6 @@
                 Deletes an existing record.
             </summary>
         </member>
-        <member name="M:Template.Controllers.v1.ExampleWithIntIdController.QueueExampleWithIntId(Template.Domain.ExampleWithIntId.Dtos.ExampleWithIntIdForCreationDto)">
-            <summary>
-                Queue a new task.
-            </summary>
-        </member>
         <member name="M:Template.Controllers.v1.ExampleWithStringIdController.Add(Template.Domain.ExampleWithStringId.Dtos.ExampleWithStringIdForCreationDto)">
             <summary>
                 Add a new record.
@@ -57,11 +52,6 @@
         <member name="M:Template.Controllers.v1.ExampleWithStringIdController.Delete(System.String)">
             <summary>
                 Deletes an existing record.
-            </summary>
-        </member>
-        <member name="M:Template.Controllers.v1.ExampleWithStringIdController.QueueExampleWithStringId(Template.Domain.ExampleWithStringId.Dtos.ExampleWithStringIdForCreationDto)">
-            <summary>
-                Queue a new task.
             </summary>
         </member>
         <member name="T:Template.Databases.EntityConfigurations.BaseEntityTypeConfiguration`2">

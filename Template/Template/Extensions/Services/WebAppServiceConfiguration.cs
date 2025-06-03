@@ -20,9 +20,6 @@ public static class WebAppServiceConfiguration
         // update CORS for your env
         builder.Services.AddCorsService("CorsPolicy", builder.Environment);
 
-        // OPEN TELEMETRY
-        builder.OpenTelemetryRegistration(builder.Configuration, "Template");
-
         // SERVICIOS DE INFRAESTRUCTURA (DATABASES, WEB SERVICES, etc.)
         builder.Services.AddInfrastructure(builder.Environment, builder.Configuration);
 

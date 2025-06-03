@@ -26,7 +26,7 @@ public sealed class TemplateDbContext : DbContext
         _mediator = mediator;
     }
 
-    public DbSet<ExampleWithIntId> ExamplesWithIntId { get; set; }
+    public DbSet<User> ExamplesWithIntId { get; set; }
     public DbSet<ExampleWithStringId> ExamplesWithStringId { get; set; }
     public DbSet<Attachment> Attachments { get; set; }
 

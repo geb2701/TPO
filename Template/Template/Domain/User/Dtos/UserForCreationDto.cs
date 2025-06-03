@@ -1,0 +1,6 @@
+namespace Template.Domain.User.Dtos;
+
+public sealed record UserForCreationDto
+{
+    public string Name { get; set; }
+}

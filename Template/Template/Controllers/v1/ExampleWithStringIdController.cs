@@ -1,5 +1,4 @@
 using Asp.Versioning;
-using Hangfire;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -130,22 +129,5 @@ public sealed class ExampleWithStringIdController : ControllerBase
         var command = new DeleteExampleWithStringId.Command(code);
         await _mediator.Send(command);
         return NoContent();
-    }
-
-    /// <summary>
-    ///     Queue a new task.
-    /// </summary>
-    [HttpPut(Name = "QueueExampleWithStringId")]
-    [ProducesResponseType(StatusCodes.Status202Accepted)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<ExampleWithStringIdDto>> QueueExampleWithStringId(
-        [FromBody] ExampleWithStringIdForCreationDto dto)
-    {
-        var command = new QueueExampleWithStringId.Command { User = "TEST" };
-        var jobId = BackgroundJob.Enqueue<QueueExampleWithStringId>(x => x.Handle(command, CancellationToken.None));
-
-        _logger.LogInformation($"[!!] Queued task with Id {jobId}.");
-
-        return AcceptedAtRoute("GetExampleWithStringId", jobId);
     }
 }

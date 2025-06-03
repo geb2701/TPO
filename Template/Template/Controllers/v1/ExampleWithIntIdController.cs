@@ -1,5 +1,4 @@
 using Asp.Versioning;
-using Hangfire;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -7,6 +6,7 @@ using System.Diagnostics.Metrics;
 using System.Text.Json;
 using Template.Domain.ExampleWithIntId.Dtos;
 using Template.Domain.ExampleWithIntId.Features;
+using Template.Domain.User.Dtos;
 using Template.Resources;
 
 namespace Template.Controllers.v1;
@@ -37,8 +37,7 @@ public sealed class ExampleWithIntIdController : ControllerBase
     [HttpPost(Name = "AddExampleWithIntId")]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<ExampleWithIntIdDto>> Add(
-        [FromBody] ExampleWithIntIdForCreationDto dto)
+    public async Task<ActionResult<UserDto>> Add([FromBody] UserForCreationDto dto)
     {
         using var scope = _logger.BeginScope("{Id}", Guid.NewGuid().ToString("N"));
 
@@ -69,7 +68,7 @@ public sealed class ExampleWithIntIdController : ControllerBase
     [HttpGet("{id:int}", Name = "GetExampleWithIntId")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<ExampleWithIntIdDto>> Get(int id)
+    public async Task<ActionResult<UserDto>> Get(int id)
     {
         var query = new GetExampleWithIntId.Query(id);
         var queryResponse = await _mediator.Send(query);
@@ -81,7 +80,7 @@ public sealed class ExampleWithIntIdController : ControllerBase
     /// </summary>
     [HttpGet(Name = "GetListExampleWithIntId")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetList([FromQuery] ExampleWithIntIdParametersDto parametersDto)
+    public async Task<IActionResult> GetList([FromQuery] UserParametersDto parametersDto)
     {
         var query = new GetExampleWithIntIdList.Query(parametersDto);
         var queryResponse = await _mediator.Send(query);
@@ -111,7 +110,7 @@ public sealed class ExampleWithIntIdController : ControllerBase
     [HttpPut("{id:int}", Name = "UpdateExampleWithIntId")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Update(int id, ExampleWithIntIdForUpdateDto dto)
+    public async Task<IActionResult> Update(int id, UserForUpdateDto dto)
     {
         var command = new UpdateExampleWithIntId.Command(id, dto);
         await _mediator.Send(command);
@@ -129,22 +128,5 @@ public sealed class ExampleWithIntIdController : ControllerBase
         var command = new DeleteExampleWithIntId.Command(id);
         await _mediator.Send(command);
         return NoContent();
-    }
-
-    /// <summary>
-    ///     Queue a new task.
-    /// </summary>
-    [HttpPut(Name = "QueueExampleWithIntId")]
-    [ProducesResponseType(StatusCodes.Status202Accepted)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<ExampleWithIntIdDto>> QueueExampleWithIntId(
-        [FromBody] ExampleWithIntIdForCreationDto dto)
-    {
-        var command = new QueueExampleWithIntId.Command { User = "TEST" };
-        var jobId = BackgroundJob.Enqueue<QueueExampleWithIntId>(x => x.Handle(command, CancellationToken.None));
-
-        _logger.LogInformation($"[!!] Queued task with Id {jobId}.");
-
-        return AcceptedAtRoute("GetExampleWithIntId", jobId);
     }
 }

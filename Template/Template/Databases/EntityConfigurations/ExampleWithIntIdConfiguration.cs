@@ -4,12 +4,12 @@ using Template.Domain.ExampleWithIntId;
 
 namespace Template.Databases.EntityConfigurations;
 
-public sealed class ExampleWithIntIdConfiguration : BaseEntityTypeConfiguration<ExampleWithIntId, int>
+public sealed class ExampleWithIntIdConfiguration : BaseEntityTypeConfiguration<User, int>
 {
     /// <summary>
     ///     The database configuration for BaseExample.
     /// </summary>
-    public override void Configure(EntityTypeBuilder<ExampleWithIntId> builder)
+    public override void Configure(EntityTypeBuilder<User> builder)
     {
         base.Configure(builder);
 
