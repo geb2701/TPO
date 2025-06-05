@@ -2,18 +2,18 @@ using MediatR;
 using SharedKernel.Databases;
 using Template.Domain.User.Services;
 
-namespace Template.Domain.ExampleWithIntId.Features;
+namespace Template.Domain.User.Features;
 
-public static class DeleteExampleWithIntId
+public static class DeleteUser
 {
     public sealed record Command(int Id) : IRequest;
 
     public sealed class Handler : IRequestHandler<Command>
     {
-        private readonly IExampleWithIntIdRepository _repository;
+        private readonly IUserRepository _repository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public Handler(IExampleWithIntIdRepository repository, IUnitOfWork unitOfWork)
+        public Handler(IUserRepository repository, IUnitOfWork unitOfWork)
         {
             _repository = repository;
             _unitOfWork = unitOfWork;

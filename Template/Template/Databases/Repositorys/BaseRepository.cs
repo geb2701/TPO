@@ -5,24 +5,17 @@ using System.Linq.Expressions;
 
 namespace Template.Databases.Repositorys
 {
-    public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity>
+    public abstract class BaseRepository<TEntity>(TemplateDbContext dbContext) : IBaseRepository<TEntity>
         where TEntity : class
     {
-        private readonly TemplateDbContext _dbContext;
-
-        protected BaseRepository(TemplateDbContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
-
         public virtual IQueryable<TEntity> Query()
         {
-            return _dbContext.Set<TEntity>();
+            return dbContext.Set<TEntity>();
         }
 
         public virtual IQueryable<TEntity> Query(Expression<Func<TEntity, bool>> filter)
         {
-            IQueryable<TEntity> result = _dbContext.Set<TEntity>();
+            IQueryable<TEntity> result = dbContext.Set<TEntity>();
 
             if (filter != null) result = result.Where(filter);
 
@@ -32,7 +25,7 @@ namespace Template.Databases.Repositorys
         public IQueryable<TEntity> Query(Expression<Func<TEntity, bool>> filter,
             params Expression<Func<TEntity, object>>[] includes)
         {
-            IQueryable<TEntity> query = _dbContext.Set<TEntity>();
+            IQueryable<TEntity> query = dbContext.Set<TEntity>();
 
             if (includes != null)
                 foreach (var includeExpression in includes)
@@ -44,7 +37,7 @@ namespace Template.Databases.Repositorys
         public virtual IQueryable<TEntity> Query(Expression<Func<TEntity, bool>> filter,
             params Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>[] includes)
         {
-            IQueryable<TEntity> query = _dbContext.Set<TEntity>();
+            IQueryable<TEntity> query = dbContext.Set<TEntity>();
 
             if (filter != null) query = query.Where(filter);
 
@@ -57,7 +50,7 @@ namespace Template.Databases.Repositorys
 
         public IQueryable<TEntity> Query(params Expression<Func<TEntity, object>>[] includes)
         {
-            IQueryable<TEntity> query = _dbContext.Set<TEntity>();
+            IQueryable<TEntity> query = dbContext.Set<TEntity>();
 
             if (includes != null)
                 foreach (var includeExpression in includes)
@@ -68,7 +61,7 @@ namespace Template.Databases.Repositorys
 
         public IQueryable<TEntity> Query(params Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>[] includes)
         {
-            IQueryable<TEntity> query = _dbContext.Set<TEntity>();
+            IQueryable<TEntity> query = dbContext.Set<TEntity>();
 
             if (includes != null)
                 foreach (var includeExpression in includes)
@@ -79,27 +72,27 @@ namespace Template.Databases.Repositorys
 
         public virtual async Task Add(TEntity entity, CancellationToken cancellationToken = default)
         {
-            await _dbContext.Set<TEntity>().AddAsync(entity, cancellationToken);
+            await dbContext.Set<TEntity>().AddAsync(entity, cancellationToken);
         }
 
         public virtual async Task AddRange(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
         {
-            await _dbContext.Set<TEntity>().AddRangeAsync(entities, cancellationToken);
+            await dbContext.Set<TEntity>().AddRangeAsync(entities, cancellationToken);
         }
 
         public virtual void Update(TEntity entity)
         {
-            _dbContext.Set<TEntity>().Update(entity);
+            dbContext.Set<TEntity>().Update(entity);
         }
 
         public virtual void Remove(TEntity entity)
         {
-            _dbContext.Set<TEntity>().Remove(entity);
+            dbContext.Set<TEntity>().Remove(entity);
         }
 
         public virtual void RemoveRange(IEnumerable<TEntity> entities)
         {
-            _dbContext.Set<TEntity>().RemoveRange(entities);
+            dbContext.Set<TEntity>().RemoveRange(entities);
         }
     }
 }

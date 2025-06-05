@@ -1,4 +1,4 @@
-namespace Template.Domain.ExampleWithIntId.Models;
+namespace Template.Domain.User.Models;
 
 public sealed record UserForCreation
 {

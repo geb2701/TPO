@@ -1,22 +1,22 @@
 using MediatR;
 using QueryKit;
 using QueryKit.Configuration;
-using Template.Domain.ExampleWithIntId.Mappings;
+using Template.Domain.User.Mappings;
 using Template.Domain.User.Dtos;
 using Template.Domain.User.Services;
 using Template.Resources.QueryKitUtilities;
 
-namespace Template.Domain.ExampleWithIntId.Features;
+namespace Template.Domain.User.Features;
 
-public static class GetExampleWithIntIdList
+public static class GetUserList
 {
     public sealed record Query(UserParametersDto QueryParameters) : IRequest<PagedList<UserDto>>;
 
     public sealed class Handler : IRequestHandler<Query, PagedList<UserDto>>
     {
-        private readonly IExampleWithIntIdRepository _repository;
+        private readonly IUserRepository _repository;
 
-        public Handler(IExampleWithIntIdRepository repository)
+        public Handler(IUserRepository repository)
         {
             _repository = repository;
         }
@@ -33,7 +33,7 @@ public static class GetExampleWithIntIdList
                 Configuration = queryKitConfig
             };
             var appliedCollection = collection.ApplyQueryKit(queryKitData);
-            var dtoCollection = appliedCollection.ToExampleWithIntIdDtoQueryable();
+            var dtoCollection = appliedCollection.ToUserDtoQueryable();
 
             return await PagedList<UserDto>.CreateAsync(dtoCollection,
                 request.QueryParameters.PageNumber,

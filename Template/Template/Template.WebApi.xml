@@ -4,27 +4,27 @@
         <name>Template</name>
     </assembly>
     <members>
-        <member name="M:Template.Controllers.v1.ExampleWithIntIdController.Add(Template.Domain.ExampleWithIntId.Dtos.ExampleWithIntIdForCreationDto)">
+        <member name="M:Template.Controllers.v1.UserController.Add(Template.Domain.User.Dtos.UserForCreationDto)">
             <summary>
                 Add a new record.
             </summary>
         </member>
-        <member name="M:Template.Controllers.v1.ExampleWithIntIdController.Get(System.Int32)">
+        <member name="M:Template.Controllers.v1.UserController.Get(System.Int32)">
             <summary>
                 Gets a single record by ID.
             </summary>
         </member>
-        <member name="M:Template.Controllers.v1.ExampleWithIntIdController.GetList(Template.Domain.ExampleWithIntId.Dtos.ExampleWithIntIdParametersDto)">
+        <member name="M:Template.Controllers.v1.UserController.GetList(Template.Domain.User.Dtos.UserParametersDto)">
             <summary>
                 Gets a list of all records.
             </summary>
         </member>
-        <member name="M:Template.Controllers.v1.ExampleWithIntIdController.Update(System.Int32,Template.Domain.ExampleWithIntId.Dtos.ExampleWithIntIdForUpdateDto)">
+        <member name="M:Template.Controllers.v1.UserController.Update(System.Int32,Template.Domain.User.Dtos.UserForUpdateDto)">
             <summary>
                 Updates an entire existing record.
             </summary>
         </member>
-        <member name="M:Template.Controllers.v1.ExampleWithIntIdController.Delete(System.Int32)">
+        <member name="M:Template.Controllers.v1.UserController.Delete(System.Int32)">
             <summary>
                 Deletes an existing record.
             </summary>
@@ -82,7 +82,7 @@
             <typeparam name="TEntity">Tipo de la entidad.</typeparam>
             <typeparam name="TKey">Tipo de la clave primaria de la entidad.</typeparam>
         </member>
-        <member name="M:Template.Databases.EntityConfigurations.ExampleWithIntIdConfiguration.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{Template.Domain.ExampleWithIntId.ExampleWithIntId})">
+        <member name="M:Template.Databases.EntityConfigurations.UserConfiguration.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{Template.Domain.User.User})">
             <summary>
                 The database configuration for BaseExample.
             </summary>

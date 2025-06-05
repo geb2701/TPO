@@ -1,7 +1,7 @@
 
 using SharedKernel.Domain.Entity;
 using System.ComponentModel.DataAnnotations;
-using Template.Domain.ExampleWithIntId.Models;
+using Template.Domain.User.Models;
 using Template.Domain.User.Models;
 namespace Template.Domain.User;
 

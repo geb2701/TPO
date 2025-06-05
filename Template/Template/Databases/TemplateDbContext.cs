@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq.Expressions;
 using Template.Databases.EntityConfigurations;
 using Template.Domain.Attachments;
-using Template.Domain.ExampleWithIntId;
+using Template.Domain.User;
 using Template.Domain.ExampleWithStringId;
 using Template.Services;
 

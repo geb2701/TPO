@@ -1,8 +1,8 @@
 using FluentValidation;
 using MediatR;
 using SharedKernel.Databases;
-using Template.Domain.ExampleWithIntId.Mappings;
 using Template.Domain.User.Dtos;
+using Template.Domain.User.Mappings;
 using Template.Domain.User.Services;
 using Template.Extensions.Application;
 
@@ -21,23 +21,23 @@ public class AddUser
         }
     }
 
-    public sealed class Handler(IExampleWithIntIdRepository repository, IUnitOfWork unitOfWork,
+    public sealed class Handler(IUserRepository repository, IUnitOfWork unitOfWork,
             AddExampleValidator validator) : IRequestHandler<Command, UserDto>
     {
         public async Task<UserDto> Handle(Command request, CancellationToken cancellationToken)
         {
             validator.ValidateAndThrowValidationException(request);
 
-            var model = request.Dto.ToExampleWithIntIdForCreation();
+            var model = request.Dto.ToUserForCreation();
             var entity = User.Create(model);
 
-            if (repository.Query().Any(x => x.Id == entity.Id))
-                throw new ApplicationException("El código proporcionado ya corresponde a otro Example.");
+            if (repository.Query().Any(x => x.Name == entity.Name))
+                throw new ApplicationException("El Name ya existe.");
 
             await repository.Add(entity, cancellationToken);
             await unitOfWork.CommitChanges(cancellationToken);
 
-            return entity.ToExampleWithIntIdDto();
+            return entity.ToUserDto();
         }
     }
 }
