@@ -113,6 +113,8 @@ app.MapControllers();
 app.UseMiddleware<AuthMiddleware>();
 app.UseSwaggerExtension(builder.Configuration, builder.Environment);
 
+await DbSeeder.DbSeedAsync(app.Services);
+
 // Note: Switch between Prometheus/OTLP/Console by setting UseMetricsExporter in appsettings.json.
 var metricsExporter = builder.Configuration.GetValue("UseMetricsExporter", defaultValue: "console")!.ToLowerInvariant();
 

@@ -60,11 +60,11 @@ public interface IJwtUtils: IScopedService
 internal class JwtUtils(IUsuarioRepository userRepository) : IJwtUtils
 {
     public static readonly string JwtSecretKey = RandomStringGenerator.GenerateRandomString(32);
+    private readonly Byte[] Key = Encoding.ASCII.GetBytes(JwtSecretKey);
     /// <inheritdoc/>
     public string GenerateJwtToken(Usuario user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(JwtSecretKey);
         var claims = new List<Claim>();
 
         PropertyInfo[] properties = typeof(Usuario).GetProperties(BindingFlags.Public | BindingFlags.Instance);
@@ -82,7 +82,9 @@ internal class JwtUtils(IUsuarioRepository userRepository) : IJwtUtils
             Subject = new ClaimsIdentity(claims),
             Expires = DateTime.UtcNow.AddMinutes(60),
             SigningCredentials =
-                new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                new SigningCredentials(new SymmetricSecurityKey(Key), SecurityAlgorithms.HmacSha256Signature),
+            Audience = "TpoAudience",
+            Issuer = "TpoIssuer"
         };
 
         var encode = tokenHandler.CreateToken(tokenDescriptor);
@@ -127,9 +129,12 @@ internal class JwtUtils(IUsuarioRepository userRepository) : IJwtUtils
         try
         {
             var validatedToken = await DecodeToken(token);
-            var username = validatedToken?.Claims.First(x => x.Key == nameof(Usuario.UsuarioNombre)).Value.ToString();
-            var password = validatedToken?.Claims.First(x => x.Key == nameof(Usuario.Contrasena)).Value.ToString();
-
+            var username = JsonSerializer.Deserialize<string>(
+                validatedToken?.Claims.First(x => x.Key == nameof(Usuario.UsuarioNombre)).Value?.ToString() ?? ""
+            );
+            var password = JsonSerializer.Deserialize<string>(
+                validatedToken?.Claims.First(x => x.Key == nameof(Usuario.Contrasena)).Value?.ToString() ?? ""
+            );
             var users = userRepository.Query(x => x.UsuarioNombre == username && x.Contrasena == password);
 
             if (users.Count() != 1)
@@ -175,12 +180,16 @@ internal class JwtUtils(IUsuarioRepository userRepository) : IJwtUtils
     public async Task<TokenValidationResult?> DecodeToken(string token)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(JwtSecretKey);
         var validatedToken = await tokenHandler.ValidateTokenAsync(token, new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(key),
+            IssuerSigningKey = new SymmetricSecurityKey(Key),
             RequireAudience = true,
+            AudienceValidator = (audiences, securityToken, validationParameters) =>
+            {
+                return audiences.Contains("TpoAudience");
+            },
+            ValidIssuer = "TpoIssuer",
             ClockSkew = TimeSpan.Zero
         });
 

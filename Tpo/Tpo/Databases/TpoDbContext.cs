@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq.Expressions;
 using Tpo.Domain.Deporte;
 using Tpo.Domain.Usuario;
+using Tpo.Domain.Usuario.Models;
 using Tpo.Services;
 
 namespace Tpo.Databases;

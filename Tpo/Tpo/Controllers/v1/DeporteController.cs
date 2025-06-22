@@ -11,7 +11,7 @@ namespace Tpo.Controllers.v1
     [ApiController]
     [Route("api/v{v:apiVersion}/[controller]")]
     [ApiVersion("1.0")]
-   
+    [Authorize]
     public class DeporteController(ILogger<DeporteController> logger, IMediator mediator) : ControllerBase
     {
         private readonly ILogger<DeporteController> _logger = logger ?? throw new ArgumentNullException(nameof(logger));

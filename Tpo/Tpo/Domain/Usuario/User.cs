@@ -10,6 +10,7 @@ namespace Tpo.Domain.Usuario
     {
         protected Usuario(){}
 
+        public new int Id { get; internal set; } = default; //Ignorar
         public string UsuarioNombre { get; private set; }
         public string Nombre { get; private set; }
         public string Contrasena { get; private set; }
