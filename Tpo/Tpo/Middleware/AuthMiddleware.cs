@@ -9,7 +9,6 @@ public class AuthMiddleware(RequestDelegate next)
     private static readonly User CurrentUser = User.Create(new Domain.User.Models.UserForCreation());
     public async Task Invoke(HttpContext context, IJwtUtils jwtUtils)
     {
-
         var token = context.Request.Headers["JwtAuthorization"].FirstOrDefault()?.Split(" ").Last();
         if (await jwtUtils.ValidationJwtTokenAsync(token))
         {

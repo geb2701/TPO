@@ -2,12 +2,16 @@ using Destructurama;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Hellang.Middleware.ProblemDetails;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using System.Globalization;
 using System.Reflection;
+using System.Text;
 using Tpo.Extensions.Application;
 using Tpo.Extensions.Services;
 using Tpo.Middleware;
+using Tpo.Services.Jwt;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,6 +63,22 @@ builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddFluentValidationClientsideAdapters();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddAuthorization();
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}
+        )
+           .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+           {
+               options.TokenValidationParameters = new TokenValidationParameters
+               {
+                   IssuerSigningKey =
+                       new SymmetricSecurityKey(Encoding.ASCII.GetBytes(JwtUtils.JwtSecretKey))
+               };
+           }
+        );
 
 var app = builder.Build();
 
