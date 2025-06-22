@@ -59,12 +59,12 @@ public interface IJwtUtils: IScopedService
 /// </summary>
 internal class JwtUtils(IUserRepository userRepository) : IJwtUtils
 {
-    private readonly string _jwtSecret = RandomStringGenerator.GenerateRandomString(32);
+    public static readonly string JwtSecretKey = RandomStringGenerator.GenerateRandomString(32);
     /// <inheritdoc/>
     public string GenerateJwtToken(User user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(_jwtSecret);
+        var key = Encoding.ASCII.GetBytes(JwtSecretKey);
         var claims = new List<Claim>();
 
         PropertyInfo[] properties = typeof(User).GetProperties(BindingFlags.Public | BindingFlags.Instance);
@@ -175,7 +175,7 @@ internal class JwtUtils(IUserRepository userRepository) : IJwtUtils
     public async Task<TokenValidationResult?> DecodeToken(string token)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(_jwtSecret);
+        var key = Encoding.ASCII.GetBytes(JwtSecretKey);
         var validatedToken = await tokenHandler.ValidateTokenAsync(token, new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
