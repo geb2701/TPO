@@ -1,41 +1,36 @@
-﻿using Asp.Versioning;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Tpo.Domain.User.Features;
-using Tpo.Domain.User.Dtos;
-using Tpo.Attributes;
-using Tpo.Services;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using Tpo.Domain.Deporte.Dtos;
+using Tpo.Domain.Deporte.Features;
 
 namespace Tpo.Controllers.v1
 {
     [ApiController]
-    [Route("api/v{v:apiVersion}/[controller]")]
-    [ApiVersion("1.0")]
-    [Authorize]
-    public class DeporteController(ILogger<UserController> logger, IMediator mediator, ICurrentUserService currentUserService) : ControllerBase
+    [Route("api/v1/[controller]")]
+    public class DeporteController : ControllerBase
     {
-        private readonly ILogger<UserController> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+        private readonly AddDeporte _addDeporte;
+        private readonly UpdateDeporte _updateDeporte;
 
-        [HttpPost("Register", Name = "Register")]
-        public async Task<ActionResult<UserDto>> Register(UserForCreationDto dto)
+        public DeporteController(AddDeporte addDeporte, UpdateDeporte updateDeporte)
         {
-            var userId = currentUserService.GetUser();
-            var query = new AddUser.Command(dto);
-            var queryResponse = await _mediator.Send(query);
-            return Ok(queryResponse);
+            _addDeporte = addDeporte;
+            _updateDeporte = updateDeporte;
         }
 
-        //Usuario añadir deporte con habulidad - el usuario tiene un tipo de notificacion
-        //Deporte crear, editar, obtener
-        //Partido crear, obtener, busquedada, inscribirse a partido, confirmar, cancelar
+        [HttpPost("Register")]
+        public async Task<IActionResult> Register([FromBody] AddDeporteDto dto)
+        {
+            var id = await _addDeporte.ExecuteAsync(dto);
+            return Ok(new { Id = id });
+        }
 
-        //sistema de notificaciones
-
-        //Factory Crear modelos
-        //Observer: escuchar eventos de partido
-        //State: estados del patido
-        //Adptarter: envio de mails
-        //Stategy eleccion de partidos
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] UpdateDeporteDto dto)
+        {
+            await _updateDeporte.ExecuteAsync(id, dto);
+            return NoContent();
+        }
     }
 }
+
