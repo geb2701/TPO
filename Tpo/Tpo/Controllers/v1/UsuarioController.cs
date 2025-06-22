@@ -56,13 +56,13 @@ namespace Tpo.Controllers.v1
             return Ok(queryResponse);
         }
 
-        /*
-        [HttpPut("Edit", Name = "Usuario")]
-        public async Task<ActionResult<UsuarioDto>> Edit(int id)
+
+        [HttpPut("{id}", Name = "Update")]
+        public async Task<ActionResult<UsuarioDto>> Update([FromRoute] int id, [FromBody] UsuarioForUpdateDto dto)
         {
-            var query = new GetUsuario.Query(id);
-            var queryResponse = await _mediator.Send(query);
-            return Ok(queryResponse);
-        }*/
+            var command = new UpdateUsuario.Command(id, dto);
+            await _mediator.Send(command);
+            return Ok();
+        }
     }
 }
