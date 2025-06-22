@@ -22,22 +22,6 @@ namespace Tpo.Controllers.v1
             return Ok(queryResponse);
         }
 
-        [HttpGet("Login", Name = "Login")]
-        public async Task<ActionResult<UserDto>> Get(int id)//cambiar parametros
-        {
-            var query = new GetUser.Query(id);
-            var queryResponse = await _mediator.Send(query);
-            return Ok(queryResponse);
-        }
-
-        [HttpPut("Edit", Name = "Edit")]
-        public async Task<ActionResult<UserDto>> Edit(int id)
-        {
-            var query = new GetUser.Query(id);
-            var queryResponse = await _mediator.Send(query);
-            return Ok(queryResponse);
-        }
-
         //Usuario añadir deporte con habulidad - el usuario tiene un tipo de notificacion
         //Deporte crear, editar, obtener
         //Partido crear, obtener, busquedada, inscribirse a partido, confirmar, cancelar

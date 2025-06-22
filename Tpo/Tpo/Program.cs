@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Reflection;
 using Tpo.Extensions.Application;
 using Tpo.Extensions.Services;
+using Tpo.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -89,23 +90,11 @@ app.UseSerilogRequestLogging();
 app.UseRouting();
 
 app.MapControllers();
-
-/* HANGFIRE */
-//app.UseHangfireDashboard("/hangfire", new DashboardOptions
-//{
-//    AsyncAuthorization = new[] { new HangfireAuthorizationFilter(scope.ServiceProvider) },
-//    IgnoreAntiforgeryToken = true
-//});
-
+app.UseMiddleware<AuthMiddleware>();
 app.UseSwaggerExtension(builder.Configuration, builder.Environment);
 
 // Note: Switch between Prometheus/OTLP/Console by setting UseMetricsExporter in appsettings.json.
 var metricsExporter = builder.Configuration.GetValue("UseMetricsExporter", defaultValue: "console")!.ToLowerInvariant();
-
-//if (metricsExporter.Equals("prometheus", StringComparison.OrdinalIgnoreCase))
-//{
-//    app.UseOpenTelemetryPrometheusScrapingEndpoint();
-//}
 
 try
 {

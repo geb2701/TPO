@@ -45,7 +45,7 @@ public sealed class TpoDbContext : DbContext
     {
         UpdateAuditFields();
         var result = base.SaveChanges();
-        _dispatchDomainEvents().GetAwaiter().GetResult();
+        DispatchDomainEvents().GetAwaiter().GetResult();
         return result;
     }
 
@@ -53,11 +53,11 @@ public sealed class TpoDbContext : DbContext
     {
         UpdateAuditFields();
         var result = await base.SaveChangesAsync(cancellationToken);
-        await _dispatchDomainEvents();
+        await DispatchDomainEvents();
         return result;
     }
 
-    private async Task _dispatchDomainEvents()
+    private async Task DispatchDomainEvents()
     {
         var domainEventEntities = ChangeTracker.Entries<IBaseEntity>()
             .Select(po => po.Entity)
@@ -76,32 +76,43 @@ public sealed class TpoDbContext : DbContext
     private void UpdateAuditFields()
     {
         var now = DateTime.UtcNow;
+        
         foreach (var entry in ChangeTracker.Entries<IBaseEntity>())
             switch (entry.State)
             {
                 case EntityState.Added:
-                    entry.Entity.UpdateCreationProperties(now, _currentUserService?.UserId);
+                    if (entry.Entity is User userCreated)
+                    {
+                        entry.Entity.UpdateCreationProperties(now, userCreated.Name);
+                    }
+                    else
+                    {
+                        var userAdd = _currentUserService.GetUser();
+                        entry.Entity.UpdateCreationProperties(now, userAdd.Name);
+                    }
                     break;
 
                 case EntityState.Modified:
-
+                    var user = _currentUserService.GetUser();
                     if (entry.Entity is IApprovableEntity approvableEntity)
                     {
                         var originalStatus = entry.OriginalValues[nameof(IApprovableEntity.Status)];
                         if (!Equals(originalStatus, approvableEntity.Status))
                         {
-                            approvableEntity.UpdateApprovedProperties(now, _currentUserService?.UserId);
+
+                            approvableEntity.UpdateApprovedProperties(now, user.Name);
                         }
                     }
                     else
                     {
-                        entry.Entity.UpdateModifiedProperties(now, _currentUserService?.UserId);
+                        entry.Entity.UpdateModifiedProperties(now, user.Name);
                     }
                     break;
 
                 case EntityState.Deleted:
+                    var userDelete = _currentUserService.GetUser();
                     entry.State = EntityState.Modified;
-                    entry.Entity.UpdateModifiedProperties(now, _currentUserService?.UserId);
+                    entry.Entity.UpdateModifiedProperties(now, userDelete.Name);
                     entry.Entity.UpdateIsDeleted(true);
                     break;
             }
