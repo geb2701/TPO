@@ -12,9 +12,9 @@ public class AddUser
 {
     public sealed record Command(UserForCreationDto Dto) : IRequest<UserDto>;
 
-    public class AddExampleValidator : AbstractValidator<Command>
+    public class AddUserValidator : AbstractValidator<Command>
     {
-        public AddExampleValidator()
+        public AddUserValidator()
         {
             RuleFor(x => x.Dto.Name).Length(3, 50)
                 .WithMessage("El nombre debe tener entre 3 y 50 caracteres.");
@@ -22,7 +22,7 @@ public class AddUser
     }
 
     public sealed class Handler(IUserRepository repository, IUnitOfWork unitOfWork,
-            AddExampleValidator validator) : IRequestHandler<Command, UserDto>
+            AddUserValidator validator) : IRequestHandler<Command, UserDto>
     {
         public async Task<UserDto> Handle(Command request, CancellationToken cancellationToken)
         {

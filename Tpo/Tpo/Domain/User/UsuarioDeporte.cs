@@ -8,9 +8,8 @@ namespace Tpo.Domain.User
         public int UserId { get; set; }  // FK al User
 
         [Required]
-        public DeporteEnumerado Deporte { get; set; }
+        //public DeporteEnumerado Deporte { get; set; }
 
-        [Required]
         public Nivel Nivel { get; set; }
     }
 }
