@@ -35,7 +35,7 @@ namespace Tpo.Domain.Usuario
         public Usuario Update(UsuarioForUpdate model)
         {
             Nombre = model.Nombre;
-            Contrasena = model.Password;
+            Contrasena = model.Contrasena;
             Ubicacion = model.Ubicacion;
             return this;
         }
