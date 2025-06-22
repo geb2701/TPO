@@ -1,0 +1,133 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Tpo</name>
+    </assembly>
+    <members>
+        <member name="M:Tpo.Controllers.v1.UserController.Add(Tpo.Domain.User.Dtos.UserForCreationDto)">
+            <summary>
+                Add a new record.
+            </summary>
+        </member>
+        <member name="M:Tpo.Controllers.v1.UserController.Get(System.Int32)">
+            <summary>
+                Gets a single record by ID.
+            </summary>
+        </member>
+        <member name="M:Tpo.Controllers.v1.UserController.GetList(Tpo.Domain.User.Dtos.UserParametersDto)">
+            <summary>
+                Gets a list of all records.
+            </summary>
+        </member>
+        <member name="M:Tpo.Controllers.v1.UserController.Update(System.Int32,Tpo.Domain.User.Dtos.UserForUpdateDto)">
+            <summary>
+                Updates an entire existing record.
+            </summary>
+        </member>
+        <member name="M:Tpo.Controllers.v1.UserController.Delete(System.Int32)">
+            <summary>
+                Deletes an existing record.
+            </summary>
+        </member>
+        <member name="M:Tpo.Controllers.v1.ExampleWithStringIdController.Add(Tpo.Domain.ExampleWithStringId.Dtos.ExampleWithStringIdForCreationDto)">
+            <summary>
+                Add a new record.
+            </summary>
+        </member>
+        <member name="M:Tpo.Controllers.v1.ExampleWithStringIdController.Get(System.String)">
+            <summary>
+                Gets a single record by ID.
+            </summary>
+        </member>
+        <member name="M:Tpo.Controllers.v1.ExampleWithStringIdController.GetList(Tpo.Domain.ExampleWithStringId.Dtos.ExampleWithStringIdParametersDto)">
+            <summary>
+                Gets a list of all records.
+            </summary>
+        </member>
+        <member name="M:Tpo.Controllers.v1.ExampleWithStringIdController.Update(System.String,Tpo.Domain.ExampleWithStringId.Dtos.ExampleWithStringIdForUpdateDto)">
+            <summary>
+                Updates an entire existing record.
+            </summary>
+        </member>
+        <member name="M:Tpo.Controllers.v1.ExampleWithStringIdController.Delete(System.String)">
+            <summary>
+                Deletes an existing record.
+            </summary>
+        </member>
+        <member name="T:Tpo.Databases.EntityConfigurations.BaseEntityTypeConfiguration`2">
+            <summary>
+            Configuración base para entidades.
+            </summary>
+            <typeparam name="TEntity">Tipo de la entidad.</typeparam>
+            <typeparam name="TKey">Tipo de la clave primaria de la entidad.</typeparam>
+        </member>
+        <member name="T:Tpo.Databases.EntityConfigurations.ApprovableEntityTypeConfiguration`2">
+            <summary>
+            Configuración para entidades aprobables.
+            </summary>
+            <typeparam name="TEntity">Tipo de la entidad.</typeparam>
+            <typeparam name="TKey">Tipo de la clave primaria de la entidad.</typeparam>
+        </member>
+        <member name="T:Tpo.Databases.EntityConfigurations.VersionableEntityTypeConfiguration`2">
+            <summary>
+            Configuración para entidades versionables.
+            </summary>
+            <typeparam name="TEntity">Tipo de la entidad.</typeparam>
+            <typeparam name="TKey">Tipo de la clave primaria de la entidad.</typeparam>
+        </member>
+        <member name="T:Tpo.Databases.EntityConfigurations.ApprovableVersionableEntityTypeConfiguration`2">
+            <summary>
+            Configuración para entidades aprobables y versionables.
+            </summary>
+            <typeparam name="TEntity">Tipo de la entidad.</typeparam>
+            <typeparam name="TKey">Tipo de la clave primaria de la entidad.</typeparam>
+        </member>
+        <member name="M:Tpo.Databases.EntityConfigurations.UserConfiguration.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{Tpo.Domain.User.User})">
+            <summary>
+                The database configuration for BaseExample.
+            </summary>
+        </member>
+        <member name="M:Tpo.Databases.EntityConfigurations.ExampleWithStringIdConfiguration.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{Tpo.Domain.ExampleWithStringId.ExampleWithStringId})">
+            <summary>
+                The database configuration for BaseExample.
+            </summary>
+        </member>
+        <member name="T:Tpo.Databases.Repositorys.IRepositoryIncludableQueryable`2">
+            <summary>
+            Interfaz que define las operaciones del repositorio con consultas que incluyen propiedades relacionadas.
+            </summary>
+            <typeparam name="TEntity">Tipo de la entidad.</typeparam>
+            <typeparam name="TKey">Tipo de la clave primaria de la entidad.</typeparam>
+        </member>
+        <member name="M:Tpo.Databases.Repositorys.IRepositoryIncludableQueryable`2.GetByIdOrDefault(`1,System.Threading.CancellationToken,System.Boolean,System.Func{System.Linq.IQueryable{`0},Microsoft.EntityFrameworkCore.Query.IIncludableQueryable{`0,System.Object}}[])">
+            <summary>
+            Obtiene una entidad por su clave primaria o devuelve null si no se encuentra, incluyendo propiedades especificadas.
+            </summary>
+            <param name="id">Clave primaria de la entidad.</param>
+            <param name="cancellationToken">Token de cancelación.</param>
+            <param name="withTracking">Indica si se debe realizar seguimiento de cambios.</param>
+            <param name="includes">Propiedades a incluir.</param>
+        </member>
+        <member name="M:Tpo.Databases.Repositorys.IRepositoryIncludableQueryable`2.GetById(`1,System.Threading.CancellationToken,System.Boolean,System.Func{System.Linq.IQueryable{`0},Microsoft.EntityFrameworkCore.Query.IIncludableQueryable{`0,System.Object}}[])">
+            <summary>
+            Obtiene una entidad por su clave primaria, incluyendo propiedades especificadas.
+            </summary>
+            <param name="id">Clave primaria de la entidad.</param>
+            <param name="cancellationToken">Token de cancelación.</param>
+            <param name="withTracking">Indica si se debe realizar seguimiento de cambios.</param>
+            <param name="includes">Propiedades a incluir.</param>
+        </member>
+        <member name="M:Tpo.Extensions.Services.WebAppServiceConfiguration.AddBoundaryServices(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Reflection.Assembly[])">
+            <summary>
+                Registers all services in the assembly of the given interface.
+            </summary>
+        </member>
+        <member name="T:Tpo.Resources.Instrumentation">
+            <summary>
+            It is recommended to use a custom type to hold references for
+            ActivitySource and Instruments. This avoids possible type collisions
+            with other components in the DI container.
+            </summary>
+        </member>
+    </members>
+</doc>
