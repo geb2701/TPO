@@ -27,6 +27,8 @@ public class User : BaseEntity<int>
 
     public User Update(UserForUpdate model)
     {
+        Name = model.Name;
+        Password = model.Password;
         return this;
     }
 }

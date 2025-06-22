@@ -1,44 +1,27 @@
 using SharedKernel.Services;
 using System.Security.Claims;
+using Tpo.Domain.User;
 
 namespace Tpo.Services;
 
 public interface ICurrentUserService : IScopedService
 {
-    ClaimsPrincipal? User { get; }
-    string? UserId { get; }
-    string? Email { get; }
-    string? FirstName { get; }
-    string? LastName { get; }
-    string? Username { get; }
-    string? ClientId { get; }
-    bool IsMachine { get; }
+    User GetUser();
 }
 
-public class CurrentUserService : ICurrentUserService
+public class CurrentUserService(IHttpContextAccessor httpContextAccessor) : ICurrentUserService
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
-
-    public CurrentUserService(IHttpContextAccessor httpContextAccessor)
+    public User GetUser()
     {
-        _httpContextAccessor = httpContextAccessor;
+        try
+        {
+            httpContextAccessor!.HttpContext!.Items.TryGetValue("User", out var _user);
+            var user = _user as User;
+            return user!;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
     }
-
-    public ClaimsPrincipal? User => _httpContextAccessor.HttpContext?.User;
-    public string? UserId => User?.FindFirstValue(ClaimTypes.Name);
-    public string? Email => User?.FindFirstValue(ClaimTypes.Email);
-    public string? FirstName => User?.FindFirstValue(ClaimTypes.GivenName);
-    public string? LastName => User?.FindFirstValue(ClaimTypes.Surname);
-
-    public string? Username => User
-        ?.Claims
-        ?.FirstOrDefault(x => x.Type is "preferred_username" or "username")
-        ?.Value;
-
-    public string? ClientId => User
-        ?.Claims
-        ?.FirstOrDefault(x => x.Type is "client_id" or "clientId")
-        ?.Value;
-
-    public bool IsMachine => ClientId != null;
 }

@@ -14,28 +14,28 @@ namespace Tpo.Controllers.v1
         private readonly ILogger<UserController> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
-        [HttpGet("Register", Name = "UserRegister")]
-        public async Task<ActionResult<UserDto>> Register(UserForCreationDto dto)
+        [HttpPost("Register", Name = "UserRegister")]
+        public async Task<ActionResult<UserDto>> Register([FromBody] UserForCreationDto dto)
         {
             var query = new AddUser.Command(dto);
             var queryResponse = await _mediator.Send(query);
             return Ok(queryResponse);
         }
 
-        [HttpGet("Login", Name = "UserLogin")]
-        public async Task<ActionResult<UserDto>> Get(int id)//cambiar parametros
+        [HttpPost("Login", Name = "UserLogin")]
+        public async Task<ActionResult<string>> Get([FromBody] UserLoginDto userLoginDto)
         {
-            var query = new GetUser.Query(id);
+            var query = new LoginUser.Command(userLoginDto);
             var queryResponse = await _mediator.Send(query);
             return Ok(queryResponse);
         }
-
+        /*
         [HttpPut("Edit", Name = "UserEdit")]
         public async Task<ActionResult<UserDto>> Edit(int id)
         {
             var query = new GetUser.Query(id);
             var queryResponse = await _mediator.Send(query);
             return Ok(queryResponse);
-        }
+        }*/
     }
 }

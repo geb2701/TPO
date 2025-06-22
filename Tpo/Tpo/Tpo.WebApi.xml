@@ -69,5 +69,72 @@
             with other components in the DI container.
             </summary>
         </member>
+        <member name="T:Tpo.Services.Jwt.IJwtUtils">
+            <summary>
+            Interfaz para utilidades relacionadas con JWT, como generación, validación y carga de tokens.
+            </summary>
+        </member>
+        <member name="M:Tpo.Services.Jwt.IJwtUtils.GenerateJwtToken(Tpo.Domain.User.User)">
+            <summary>
+            Genera un token JWT a partir de un usuario.
+            </summary>
+            <param name="user">Usuario para el cual se genera el token.</param>
+            <returns>Token JWT como cadena.</returns>
+        </member>
+        <member name="M:Tpo.Services.Jwt.IJwtUtils.ValidateJwtTokenAsync(System.String)">
+            <summary>
+            Valida un token JWT y retorna el nombre de usuario si es válido.
+            </summary>
+            <param name="token">Token JWT a validar.</param>
+            <returns>Nombre de usuario si es válido, o null si no lo es.</returns>
+        </member>
+        <member name="M:Tpo.Services.Jwt.IJwtUtils.ValidationJwtTokenAsync(System.String)">
+            <summary>
+            Valida un token JWT y retorna true si es válido.
+            </summary>
+            <param name="token">Token JWT a validar.</param>
+            <returns>True si el token es válido, false en caso contrario.</returns>
+        </member>
+        <member name="M:Tpo.Services.Jwt.IJwtUtils.DecodeToken(System.String)">
+            <summary>
+            Decodifica y valida un token JWT, devolviendo el resultado de la validación.
+            </summary>
+            <param name="token">Token JWT a decodificar.</param>
+            <returns>Resultado de la validación del token.</returns>
+        </member>
+        <member name="M:Tpo.Services.Jwt.IJwtUtils.LoadToken(System.String,Tpo.Domain.User.User)">
+            <summary>
+            Carga los datos del token JWT en la instancia de usuario proporcionada.
+            </summary>
+            <param name="token">Token JWT a cargar.</param>
+            <param name="user">Instancia de usuario donde se cargarán los datos.</param>
+        </member>
+        <member name="T:Tpo.Services.Jwt.JwtUtils">
+            <summary>
+            Implementación de <see cref="T:Tpo.Services.Jwt.IJwtUtils"/> para la gestión de tokens JWT.
+            Permite generar, validar y cargar información de usuarios desde tokens JWT.
+            </summary>
+        </member>
+        <member name="M:Tpo.Services.Jwt.JwtUtils.#ctor(Tpo.Domain.User.Services.IUserRepository)">
+            <summary>
+            Implementación de <see cref="T:Tpo.Services.Jwt.IJwtUtils"/> para la gestión de tokens JWT.
+            Permite generar, validar y cargar información de usuarios desde tokens JWT.
+            </summary>
+        </member>
+        <member name="M:Tpo.Services.Jwt.JwtUtils.GenerateJwtToken(Tpo.Domain.User.User)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Tpo.Services.Jwt.JwtUtils.ValidateJwtTokenAsync(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Tpo.Services.Jwt.JwtUtils.ValidationJwtTokenAsync(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Tpo.Services.Jwt.JwtUtils.LoadToken(System.String,Tpo.Domain.User.User)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Tpo.Services.Jwt.JwtUtils.DecodeToken(System.String)">
+            <inheritdoc/>
+        </member>
     </members>
 </doc>
