@@ -19,9 +19,6 @@ public class UpdateDeporte
             RuleFor(x => x.Dto.Nombre)
                 .NotEmpty().WithMessage("El nombre es obligatorio.")
                 .Length(3, 50).WithMessage("El nombre debe tener entre 3 y 50 caracteres.");
-
-            RuleFor(x => x.Dto.Dificultad)
-                .InclusiveBetween(1, 10).WithMessage("La dificultad debe estar entre 1 y 10.");
         }
     }
 
@@ -46,7 +43,7 @@ public class UpdateDeporte
             var entity = await _repository.GetById(request.Id, cancellationToken);
             var model = request.Dto.ToDeporteForUpdate();
 
-            entity.Update(model);
+            entity.Update(model.Nombre); // Solo se actualiza el nombre
 
             _repository.Update(entity);
             await _unitOfWork.CommitChanges(cancellationToken);

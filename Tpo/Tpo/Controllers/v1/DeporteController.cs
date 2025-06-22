@@ -19,9 +19,9 @@ namespace Tpo.Controllers.v1
         private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
         [HttpPost(Name = "DeporteAdd")]
-        public async Task<IActionResult> DeporteAdd([FromBody] DeporteForCreationDto dto)
+        public async Task<IActionResult> DeporteAdd([FromBody] UsuarioDeporteForCreationDto dto)
         {
-            var command = new AddDeporte.Command(dto);
+            var command = new AddUsuarioDeporte.Command(dto);
             var queryResponse = await _mediator.Send(command);
             return Ok(queryResponse);
         }

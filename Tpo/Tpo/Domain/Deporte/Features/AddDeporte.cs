@@ -8,9 +8,9 @@ using Tpo.Extensions.Application;
 
 namespace Tpo.Domain.Deporte.Features;
 
-public class AddDeporte
+public class AddUsuarioDeporte
 {
-    public sealed record Command(DeporteForCreationDto Dto) : IRequest<DeporteDto>;
+    public sealed record Command(UsuarioDeporteForCreationDto Dto) : IRequest<UsuarioDeporteDto>;
 
     public class AddDeporteValidator : AbstractValidator<Command>
     {
@@ -22,9 +22,9 @@ public class AddDeporte
     }
 
     public sealed class Handler(IDeporteRepository repository, IUnitOfWork unitOfWork,
-            AddDeporteValidator validator) : IRequestHandler<Command, DeporteDto>
+            AddDeporteValidator validator) : IRequestHandler<Command, UsuarioDeporteDto>
     {
-        public async Task<DeporteDto> Handle(Command request, CancellationToken cancellationToken)
+        public async Task<UsuarioDeporteDto> Handle(Command request, CancellationToken cancellationToken)
         {
             validator.ValidateAndThrowValidationException(request);
 
