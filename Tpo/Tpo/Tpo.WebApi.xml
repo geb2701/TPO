@@ -4,56 +4,6 @@
         <name>Tpo</name>
     </assembly>
     <members>
-        <member name="M:Tpo.Controllers.v1.UserController.Add(Tpo.Domain.User.Dtos.UserForCreationDto)">
-            <summary>
-                Add a new record.
-            </summary>
-        </member>
-        <member name="M:Tpo.Controllers.v1.UserController.Get(System.Int32)">
-            <summary>
-                Gets a single record by ID.
-            </summary>
-        </member>
-        <member name="M:Tpo.Controllers.v1.UserController.GetList(Tpo.Domain.User.Dtos.UserParametersDto)">
-            <summary>
-                Gets a list of all records.
-            </summary>
-        </member>
-        <member name="M:Tpo.Controllers.v1.UserController.Update(System.Int32,Tpo.Domain.User.Dtos.UserForUpdateDto)">
-            <summary>
-                Updates an entire existing record.
-            </summary>
-        </member>
-        <member name="M:Tpo.Controllers.v1.UserController.Delete(System.Int32)">
-            <summary>
-                Deletes an existing record.
-            </summary>
-        </member>
-        <member name="M:Tpo.Controllers.v1.ExampleWithStringIdController.Add(Tpo.Domain.ExampleWithStringId.Dtos.ExampleWithStringIdForCreationDto)">
-            <summary>
-                Add a new record.
-            </summary>
-        </member>
-        <member name="M:Tpo.Controllers.v1.ExampleWithStringIdController.Get(System.String)">
-            <summary>
-                Gets a single record by ID.
-            </summary>
-        </member>
-        <member name="M:Tpo.Controllers.v1.ExampleWithStringIdController.GetList(Tpo.Domain.ExampleWithStringId.Dtos.ExampleWithStringIdParametersDto)">
-            <summary>
-                Gets a list of all records.
-            </summary>
-        </member>
-        <member name="M:Tpo.Controllers.v1.ExampleWithStringIdController.Update(System.String,Tpo.Domain.ExampleWithStringId.Dtos.ExampleWithStringIdForUpdateDto)">
-            <summary>
-                Updates an entire existing record.
-            </summary>
-        </member>
-        <member name="M:Tpo.Controllers.v1.ExampleWithStringIdController.Delete(System.String)">
-            <summary>
-                Deletes an existing record.
-            </summary>
-        </member>
         <member name="T:Tpo.Databases.EntityConfigurations.BaseEntityTypeConfiguration`2">
             <summary>
             Configuración base para entidades.
@@ -81,16 +31,6 @@
             </summary>
             <typeparam name="TEntity">Tipo de la entidad.</typeparam>
             <typeparam name="TKey">Tipo de la clave primaria de la entidad.</typeparam>
-        </member>
-        <member name="M:Tpo.Databases.EntityConfigurations.UserConfiguration.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{Tpo.Domain.User.User})">
-            <summary>
-                The database configuration for BaseExample.
-            </summary>
-        </member>
-        <member name="M:Tpo.Databases.EntityConfigurations.ExampleWithStringIdConfiguration.Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder{Tpo.Domain.ExampleWithStringId.ExampleWithStringId})">
-            <summary>
-                The database configuration for BaseExample.
-            </summary>
         </member>
         <member name="T:Tpo.Databases.Repositorys.IRepositoryIncludableQueryable`2">
             <summary>

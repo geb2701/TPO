@@ -3,7 +3,6 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Tpo.Domain.User.Features;
 using Tpo.Domain.User.Dtos;
-using Tpo.Domain.User.Features;
 
 namespace Tpo.Controllers.v1
 {

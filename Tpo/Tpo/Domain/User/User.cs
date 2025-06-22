@@ -2,7 +2,6 @@
 using SharedKernel.Domain.Entity;
 using System.ComponentModel.DataAnnotations;
 using Tpo.Domain.User.Models;
-using Tpo.Domain.User.Models;
 namespace Tpo.Domain.User;
 
 public class User : BaseEntity<int>

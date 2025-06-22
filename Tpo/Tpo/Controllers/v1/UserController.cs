@@ -3,7 +3,6 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Tpo.Domain.User.Features;
 using Tpo.Domain.User.Dtos;
-using Tpo.Domain.User.Features;
 
 namespace Tpo.Controllers.v1
 {
@@ -15,7 +14,7 @@ namespace Tpo.Controllers.v1
         private readonly ILogger<UserController> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
-        [HttpGet("Register", Name = "Register")]
+        [HttpGet("Register", Name = "UserRegister")]
         public async Task<ActionResult<UserDto>> Register(UserForCreationDto dto)
         {
             var query = new AddUser.Command(dto);
@@ -23,7 +22,7 @@ namespace Tpo.Controllers.v1
             return Ok(queryResponse);
         }
 
-        [HttpGet("Login", Name = "Login")]
+        [HttpGet("Login", Name = "UserLogin")]
         public async Task<ActionResult<UserDto>> Get(int id)//cambiar parametros
         {
             var query = new GetUser.Query(id);
@@ -31,7 +30,7 @@ namespace Tpo.Controllers.v1
             return Ok(queryResponse);
         }
 
-        [HttpPut("Edit", Name = "Edit")]
+        [HttpPut("Edit", Name = "UserEdit")]
         public async Task<ActionResult<UserDto>> Edit(int id)
         {
             var query = new GetUser.Query(id);

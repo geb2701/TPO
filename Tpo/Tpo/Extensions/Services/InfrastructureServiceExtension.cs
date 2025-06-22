@@ -22,9 +22,9 @@ public static class DatabaseConfig
     public static void SetupDatabase(this IServiceCollection services, IWebHostEnvironment env, IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionStringOptions().Tpo;
-        var useDbInMemory = configuration.GetValue<bool>("DbInMemory", false);
+        var useDbInMemory = configuration.GetValue<bool>("DbInMemory", true);
 
-        if (useDbInMemory && env.IsDevelopment())
+        if (useDbInMemory)
         {
             // In-memory database for testing in development
             services.AddDbContext<TpoDbContext>(options =>
@@ -43,9 +43,5 @@ public static class DatabaseConfig
                     builder => builder.MigrationsAssembly(typeof(TpoDbContext).Assembly.FullName)));
             //.UseSnakeCaseNamingConvention());
         }
-
-        // Execute migrations on startup
-        // https://learn.microsoft.com/es-es/ef/core/managing-schemas/migrations/applying?tabs=dotnet-core-cli#apply-migrations-at-runtime
-        //services.AddHostedService<MigrationHostedService<TpoDbContext>>();
     }
 }
