@@ -1,22 +1,22 @@
 using SharedKernel.Services;
 using System.Security.Claims;
-using Tpo.Domain.User;
+using Tpo.Domain.Usuario;
 
 namespace Tpo.Services;
 
-public interface ICurrentUserService : IScopedService
+public interface ICurrentUsuarioService : IScopedService
 {
-    User GetUser();
+    Usuario GetUsuario();
 }
 
-public class CurrentUserService(IHttpContextAccessor httpContextAccessor) : ICurrentUserService
+public class CurrentUsuarioService(IHttpContextAccessor httpContextAccessor) : ICurrentUsuarioService
 {
-    public User GetUser()
+    public Usuario GetUsuario()
     {
         try
         {
-            httpContextAccessor!.HttpContext!.Items.TryGetValue("User", out var _user);
-            var user = _user as User;
+            httpContextAccessor!.HttpContext!.Items.TryGetValue("Usuario", out var _user);
+            var user = _user as Usuario;
             return user!;
         }
         catch (Exception ex)

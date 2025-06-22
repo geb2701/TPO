@@ -1,6 +1,6 @@
-namespace Tpo.Domain.User.Dtos
+namespace Tpo.Domain.Usuario.Dtos
 {
-    public sealed record UserForUpdateDto
+    public sealed record UsuarioLoginDto
     {
         public string Name { get; set; }
         public string Password { get; set; }

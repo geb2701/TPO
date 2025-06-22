@@ -1,35 +1,29 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Asp.Versioning;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Tpo.Attributes;
 using Tpo.Domain.Deporte.Dtos;
 using Tpo.Domain.Deporte.Features;
+using Tpo.Domain.Usuario.Features;
 
 namespace Tpo.Controllers.v1
 {
     [ApiController]
-    [Route("api/v1/[controller]")]
-    public class DeporteController : ControllerBase
+    [Route("api/v{v:apiVersion}/[controller]")]
+    [ApiVersion("1.0")]
+    [Authorize]
+    public class DeporteController(ILogger<DeporteController> logger, IMediator mediator) : ControllerBase
     {
-        private readonly AddDeporte _addDeporte;
-        private readonly UpdateDeporte _updateDeporte;
+        private readonly ILogger<DeporteController> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
-        public DeporteController(AddDeporte addDeporte, UpdateDeporte updateDeporte)
+        [HttpPost(Name = "DeporteAdd")]
+        public async Task<IActionResult> DeporteAdd([FromBody] DeporteForCreationDto dto)
         {
-            _addDeporte = addDeporte;
-            _updateDeporte = updateDeporte;
-        }
-
-        [HttpPost("Register")]
-        public async Task<IActionResult> Register([FromBody] AddDeporteDto dto)
-        {
-            var id = await _addDeporte.ExecuteAsync(dto);
-            return Ok(new { Id = id });
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] UpdateDeporteDto dto)
-        {
-            await _updateDeporte.ExecuteAsync(id, dto);
-            return NoContent();
+            var command = new AddDeporte.Command(dto);
+            var queryResponse = await _mediator.Send(command);
+            return Ok(queryResponse);
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using Tpo.Resources.QueryKitUtilities;
 
-namespace Tpo.Domain.User.Dtos
+namespace Tpo.Domain.Usuario.Dtos
 {
-    public class UserParametersDto : BasePaginationParameters
+    public class UsuarioParametersDto : BasePaginationParameters
     {
         public string? Filters { get; set; }
         public string? SortOrder { get; set; }

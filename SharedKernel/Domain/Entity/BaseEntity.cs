@@ -33,11 +33,6 @@ namespace SharedKernel.Domain.Entity
         /// Obtiene un valor que indica si la entidad está eliminada.
         /// </summary>
         bool IsDeleted { get; }
-
-        /// <summary>
-        /// Obtiene la lista de eventos de dominio asociados a la entidad.
-        /// </summary>
-        List<DomainEvent> DomainEvents { get; }
     }
 
     /// <summary>
@@ -72,12 +67,6 @@ namespace SharedKernel.Domain.Entity
         public bool IsDeleted { get; private set; }
 
         /// <summary>
-        /// Obtiene la lista de eventos de dominio asociados a la entidad.
-        /// </summary>
-        [NotMapped]
-        public List<DomainEvent> DomainEvents { get; } = new List<DomainEvent>();
-
-        /// <summary>
         /// Actualiza las propiedades de creación de la entidad.
         /// </summary>
         /// <param name="createdAt">Fecha de creación.</param>
@@ -106,28 +95,6 @@ namespace SharedKernel.Domain.Entity
         public void UpdateIsDeleted(bool isDeleted)
         {
             IsDeleted = isDeleted;
-        }
-
-        /// <summary>
-        /// Agrega un evento de dominio a la lista de eventos de dominio de la entidad.
-        /// </summary>
-        /// <param name="event">Evento de dominio a agregar.</param>
-        protected void QueueDomainEvent(DomainEvent @event)
-        {
-            if (!DomainEvents.Contains(@event))
-                DomainEvents.Add(@event);
-        }
-
-        /// <summary>
-        /// Verifica una regla de negocio y lanza una excepción si la regla está rota.
-        /// </summary>
-        /// <param name="rule">Regla de negocio a verificar.</param>
-        protected static void CheckRule(IBusinessRule rule)
-        {
-            if (rule.IsBroken)
-            {
-                throw new BusinessRuleException(rule);
-            }
         }
     }
 }

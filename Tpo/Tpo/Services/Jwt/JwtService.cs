@@ -6,8 +6,8 @@ using System.Reflection;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
-using Tpo.Domain.User;
-using Tpo.Domain.User.Services;
+using Tpo.Domain.Usuario;
+using Tpo.Domain.Usuario.Services;
 
 namespace Tpo.Services.Jwt;
 
@@ -22,7 +22,7 @@ public interface IJwtUtils: IScopedService
     /// </summary>
     /// <param name="user">Usuario para el cual se genera el token.</param>
     /// <returns>Token JWT como cadena.</returns>
-    string GenerateJwtToken(User user);
+    string GenerateJwtToken(Usuario user);
 
     /// <summary>
     /// Valida un token JWT y retorna el nombre de usuario si es válido.
@@ -50,24 +50,24 @@ public interface IJwtUtils: IScopedService
     /// </summary>
     /// <param name="token">Token JWT a cargar.</param>
     /// <param name="user">Instancia de usuario donde se cargarán los datos.</param>
-    Task LoadToken(string token, User user);
+    Task LoadToken(string token, Usuario user);
 }
 
 /// <summary>
 /// Implementación de <see cref="IJwtUtils"/> para la gestión de tokens JWT.
 /// Permite generar, validar y cargar información de usuarios desde tokens JWT.
 /// </summary>
-internal class JwtUtils(IUserRepository userRepository) : IJwtUtils
+internal class JwtUtils(IUsuarioRepository userRepository) : IJwtUtils
 {
     public static readonly string JwtSecretKey = RandomStringGenerator.GenerateRandomString(32);
     /// <inheritdoc/>
-    public string GenerateJwtToken(User user)
+    public string GenerateJwtToken(Usuario user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(JwtSecretKey);
         var claims = new List<Claim>();
 
-        PropertyInfo[] properties = typeof(User).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+        PropertyInfo[] properties = typeof(Usuario).GetProperties(BindingFlags.Public | BindingFlags.Instance);
         foreach (PropertyInfo property in properties)
         {
             if (property.CanRead && property.CanWrite)
@@ -100,17 +100,17 @@ internal class JwtUtils(IUserRepository userRepository) : IJwtUtils
         try
         {
             var validatedToken = await DecodeToken(token);
-            var username = validatedToken?.Claims.First(x => x.Key == nameof(User.Name)).Value.ToString();
-            var password = validatedToken?.Claims.First(x => x.Key == nameof(User.Password)).Value.ToString();
+            var username = validatedToken?.Claims.First(x => x.Key == nameof(Usuario.UsuarioNombre)).Value.ToString();
+            var password = validatedToken?.Claims.First(x => x.Key == nameof(Usuario.Contrasena)).Value.ToString();
 
-            var users = userRepository.Query(x => x.Name == username && x.Password == password);
+            var users = userRepository.Query(x => x.UsuarioNombre == username && x.Contrasena == password);
 
             if (users.Count() != 1)
             {
                 return null;
             }
 
-            return users.FirstOrDefault().Name;
+            return users.FirstOrDefault().UsuarioNombre;
         }
         catch
         {
@@ -127,10 +127,10 @@ internal class JwtUtils(IUserRepository userRepository) : IJwtUtils
         try
         {
             var validatedToken = await DecodeToken(token);
-            var username = validatedToken?.Claims.First(x => x.Key == nameof(User.Name)).Value.ToString();
-            var password = validatedToken?.Claims.First(x => x.Key == nameof(User.Password)).Value.ToString();
+            var username = validatedToken?.Claims.First(x => x.Key == nameof(Usuario.UsuarioNombre)).Value.ToString();
+            var password = validatedToken?.Claims.First(x => x.Key == nameof(Usuario.Contrasena)).Value.ToString();
 
-            var users = userRepository.Query(x => x.Name == username && x.Password == password);
+            var users = userRepository.Query(x => x.UsuarioNombre == username && x.Contrasena == password);
 
             if (users.Count() != 1)
             {
@@ -146,12 +146,12 @@ internal class JwtUtils(IUserRepository userRepository) : IJwtUtils
     }
 
     /// <inheritdoc/>
-    public async Task LoadToken(string token, User user)
+    public async Task LoadToken(string token, Usuario user)
     {
         var validatedToken = await DecodeToken(token);
 
         // Asigna los valores de los claims a las propiedades del usuario
-        PropertyInfo[] properties = typeof(User).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+        PropertyInfo[] properties = typeof(Usuario).GetProperties(BindingFlags.Public | BindingFlags.Instance);
         foreach (PropertyInfo property in properties)
         {
 

@@ -1,5 +1,5 @@
 ﻿using SharedKernel.Domain.Entity;
-using System.ComponentModel.DataAnnotations;
+using Tpo.Domain.Deporte.Models;
 
 namespace Tpo.Domain.Deporte
 {
@@ -11,23 +11,14 @@ namespace Tpo.Domain.Deporte
         {
             return new Deporte
             {
-                Nombre = deporteForCreation.Nombre,
-                Dificultad = deporteForCreation.Dificultad
-            };
-        }
-        {
-            return new Deporte
-            {
-                Nombre = nombre,
-                Dificultad = dificultad
+                Nombre = deporteForCreation.Nombre
             };
         }
 
         public Deporte Update(DeporteForUpdate deporteForUpdate)
         {
-            Nombre = nombre;
-            Dificultad = dificultad;
-            return this;
+            Nombre = deporteForUpdate.Nombre;
+            return this;//retornamos la misma instancia de la clase deporte, ya que no queremos crear una nueva instancia, sino actualizar la existente
         }
     }
 }

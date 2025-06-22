@@ -4,48 +4,28 @@ using Microsoft.EntityFrameworkCore.Query;
 using SharedKernel.Domain.Entity;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq.Expressions;
-using Tpo.Domain.User;
+using Tpo.Domain.Deporte;
+using Tpo.Domain.Usuario;
 using Tpo.Services;
 
 namespace Tpo.Databases;
 
-public sealed class TpoDbContext : DbContext
+public sealed class TpoDbContext(DbContextOptions<TpoDbContext> options,
+    ICurrentUsuarioService currentUsuarioService) : DbContext(options)
 {
-    private readonly ICurrentUserService _currentUserService;
-    private readonly IMediator _mediator;
-    private readonly DbContextOptions<TpoDbContext> _options;
-
-    public TpoDbContext(DbContextOptions<TpoDbContext> options,
-        ICurrentUserService currentUserService, IMediator mediator) : base(options)
-    {
-        _options = options;
-        _currentUserService = currentUserService;
-        _mediator = mediator;
-    }
-
-    public DbSet<User> User { get; set; }
-    public DbSet<User> Deporte { get; set; }
+    public DbSet<Usuario> Usuario { get; set; }
+    public DbSet<Deporte> Deporte { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.FilterSoftDeletedRecords();
-        /* any query filters added after this will override soft delete
-                https://docs.microsoft.com/en-us/ef/core/querying/filters
-                https://github.com/dotnet/efcore/issues/10275
-        */
-
-        // modelBuilder.ApplyConfiguration(new BaseExampleConfiguration());
-
-        // descomentar para añadir ejemplos
-        //modelBuilder.Seed();
     }
 
     public override int SaveChanges()
     {
         UpdateAuditFields();
         var result = base.SaveChanges();
-        DispatchDomainEvents().GetAwaiter().GetResult();
         return result;
     }
 
@@ -53,24 +33,7 @@ public sealed class TpoDbContext : DbContext
     {
         UpdateAuditFields();
         var result = await base.SaveChangesAsync(cancellationToken);
-        await DispatchDomainEvents();
         return result;
-    }
-
-    private async Task DispatchDomainEvents()
-    {
-        var domainEventEntities = ChangeTracker.Entries<IBaseEntity>()
-            .Select(po => po.Entity)
-            .Where(po => po.DomainEvents.Count != 0)
-            .ToArray();
-
-        foreach (var entity in domainEventEntities)
-        {
-            var events = entity.DomainEvents.ToArray();
-            entity.DomainEvents.Clear();
-            foreach (var entityDomainEvent in events)
-                await _mediator.Publish(entityDomainEvent);
-        }
     }
 
     private void UpdateAuditFields()
@@ -81,38 +44,38 @@ public sealed class TpoDbContext : DbContext
             switch (entry.State)
             {
                 case EntityState.Added:
-                    if (entry.Entity is User userCreated)
+                    if (entry.Entity is Usuario userCreated)
                     {
-                        entry.Entity.UpdateCreationProperties(now, userCreated.Name);
+                        entry.Entity.UpdateCreationProperties(now, userCreated.UsuarioNombre);
                     }
                     else
                     {
-                        var userAdd = _currentUserService.GetUser();
-                        entry.Entity.UpdateCreationProperties(now, userAdd.Name);
+                        var userAdd = currentUsuarioService.GetUsuario();
+                        entry.Entity.UpdateCreationProperties(now, userAdd.UsuarioNombre);
                     }
                     break;
 
                 case EntityState.Modified:
-                    var user = _currentUserService.GetUser();
+                    var user = currentUsuarioService.GetUsuario();
                     if (entry.Entity is IApprovableEntity approvableEntity)
                     {
                         var originalStatus = entry.OriginalValues[nameof(IApprovableEntity.Status)];
                         if (!Equals(originalStatus, approvableEntity.Status))
                         {
 
-                            approvableEntity.UpdateApprovedProperties(now, user.Name);
+                            approvableEntity.UpdateApprovedProperties(now, user.UsuarioNombre);
                         }
                     }
                     else
                     {
-                        entry.Entity.UpdateModifiedProperties(now, user.Name);
+                        entry.Entity.UpdateModifiedProperties(now, user.UsuarioNombre);
                     }
                     break;
 
                 case EntityState.Deleted:
-                    var userDelete = _currentUserService.GetUser();
+                    var userDelete = currentUsuarioService.GetUsuario();
                     entry.State = EntityState.Modified;
-                    entry.Entity.UpdateModifiedProperties(now, userDelete.Name);
+                    entry.Entity.UpdateModifiedProperties(now, userDelete.UsuarioNombre);
                     entry.Entity.UpdateIsDeleted(true);
                     break;
             }

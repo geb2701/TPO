@@ -74,7 +74,7 @@
             Interfaz para utilidades relacionadas con JWT, como generación, validación y carga de tokens.
             </summary>
         </member>
-        <member name="M:Tpo.Services.Jwt.IJwtUtils.GenerateJwtToken(Tpo.Domain.User.User)">
+        <member name="M:Tpo.Services.Jwt.IJwtUtils.GenerateJwtToken(Tpo.Domain.Usuario.Usuario)">
             <summary>
             Genera un token JWT a partir de un usuario.
             </summary>
@@ -102,7 +102,7 @@
             <param name="token">Token JWT a decodificar.</param>
             <returns>Resultado de la validación del token.</returns>
         </member>
-        <member name="M:Tpo.Services.Jwt.IJwtUtils.LoadToken(System.String,Tpo.Domain.User.User)">
+        <member name="M:Tpo.Services.Jwt.IJwtUtils.LoadToken(System.String,Tpo.Domain.Usuario.Usuario)">
             <summary>
             Carga los datos del token JWT en la instancia de usuario proporcionada.
             </summary>
@@ -115,13 +115,13 @@
             Permite generar, validar y cargar información de usuarios desde tokens JWT.
             </summary>
         </member>
-        <member name="M:Tpo.Services.Jwt.JwtUtils.#ctor(Tpo.Domain.User.Services.IUserRepository)">
+        <member name="M:Tpo.Services.Jwt.JwtUtils.#ctor(Tpo.Domain.Usuario.Services.IUsuarioRepository)">
             <summary>
             Implementación de <see cref="T:Tpo.Services.Jwt.IJwtUtils"/> para la gestión de tokens JWT.
             Permite generar, validar y cargar información de usuarios desde tokens JWT.
             </summary>
         </member>
-        <member name="M:Tpo.Services.Jwt.JwtUtils.GenerateJwtToken(Tpo.Domain.User.User)">
+        <member name="M:Tpo.Services.Jwt.JwtUtils.GenerateJwtToken(Tpo.Domain.Usuario.Usuario)">
             <inheritdoc/>
         </member>
         <member name="M:Tpo.Services.Jwt.JwtUtils.ValidateJwtTokenAsync(System.String)">
@@ -130,7 +130,7 @@
         <member name="M:Tpo.Services.Jwt.JwtUtils.ValidationJwtTokenAsync(System.String)">
             <inheritdoc/>
         </member>
-        <member name="M:Tpo.Services.Jwt.JwtUtils.LoadToken(System.String,Tpo.Domain.User.User)">
+        <member name="M:Tpo.Services.Jwt.JwtUtils.LoadToken(System.String,Tpo.Domain.Usuario.Usuario)">
             <inheritdoc/>
         </member>
         <member name="M:Tpo.Services.Jwt.JwtUtils.DecodeToken(System.String)">

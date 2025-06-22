@@ -1,6 +1,6 @@
-namespace Tpo.Domain.User.Dtos;
+namespace Tpo.Domain.Deporte.Dtos;
 
-public sealed record UserDto
+public sealed record DeporteDto
 {
     public int Id { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
@@ -8,5 +8,7 @@ public sealed record UserDto
     public DateTimeOffset? LastModifiedAt { get; set; }
     public string LastModifiedBy { get; set; }
     public bool IsDeleted { get; set; }
-    public string Name { get; set; }
+
+    // Atributos de la clase deporte
+    public string Nombre { get; set; }
 }

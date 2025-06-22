@@ -35,7 +35,7 @@ public static class DatabaseConfig
             if (string.IsNullOrWhiteSpace(connectionString))
                 // this makes local migrations easier to manage. feel free to refactor if desired.
                 connectionString = env.IsDevelopment()
-                    ? "Data Source=localhost,63878;Integrated Security=False;Database=dev_template;User ID=SA;Password=#localDockerPassword#"
+                    ? "Data Source=localhost,63878;Integrated Security=False;Database=dev_template;Usuario ID=SA;Password=#localDockerPassword#"
                     : throw new Exception("The database connection string is not set.");
 
             services.AddDbContext<TpoDbContext>(options =>
