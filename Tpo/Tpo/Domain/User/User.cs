@@ -12,12 +12,14 @@ public class User : BaseEntity<int>
     }
 
     [Required] public string Name { get; set; }
+    [Required] public string Password { get; set; }
 
     public static User Create(UserForCreation exampleWithStringIdForCreation)
     {
         var newExample = new User
         {
-            Name = exampleWithStringIdForCreation.Name
+            Name = exampleWithStringIdForCreation.Name,
+            Password = exampleWithStringIdForCreation.Password
         };
 
         return newExample;
