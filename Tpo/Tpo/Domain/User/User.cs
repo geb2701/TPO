@@ -1,32 +1,39 @@
-
 using SharedKernel.Domain.Entity;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Tpo.Domain.User.Models;
-namespace Tpo.Domain.User;
 
-public class User : BaseEntity<int>
+namespace Tpo.Domain.User
 {
-    // For EF + Mocking
-    protected User()
+    public class User : BaseEntity<int>
     {
-    }
-
-    [Required] public string Name { get; set; }
-    [Required] public string Password { get; set; }
-
-    public static User Create(UserForCreation exampleWithStringIdForCreation)
-    {
-        var newExample = new User
+        protected User()
         {
-            Name = exampleWithStringIdForCreation.Name,
-            Password = exampleWithStringIdForCreation.Password
-        };
+            Deportes = new List<UsuarioDeporte>();
+        }
 
-        return newExample;
-    }
+        [Required] public string Name { get; set; }
+        [Required] public string Password { get; set; }
+        [Required] public string Email { get; set; }
 
-    public User Update(UserForUpdate model)
-    {
-        return this;
+        public List<UsuarioDeporte> Deportes { get; set; }
+
+        public static User Create(UserForCreation exampleWithStringIdForCreation)
+        {
+            var newExample = new User
+            {
+                Name = exampleWithStringIdForCreation.Name,
+                Password = exampleWithStringIdForCreation.Password,
+                Email = exampleWithStringIdForCreation.Email
+                // Los deportes se agregan aparte
+            };
+
+            return newExample;
+        }
+
+        public User Update(UserForUpdate model)
+        {
+            return this;
+        }
     }
 }
