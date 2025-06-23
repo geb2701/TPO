@@ -5,17 +5,17 @@ using Tpo.Domain.Deporte.Models;
 namespace Tpo.Domain.Deporte.Mappings;
 
 [Mapper]
-[UseStaticMapper(typeof(UsuarioDeporteMapper))]
-public static partial class UsuarioDeporteMapper
+[UseStaticMapper(typeof(DeporteMapper))]
+public static partial class DeporteMapper
 {
-    public static partial UsuarioDeporteForCreation ToDeporteForCreation(
-        this UsuarioDeporteForCreationDto dto);
+    public static partial DeporteForCreation ToDeporteForCreation(
+        this DeporteForCreationDto dto);
 
-    public static partial UsuarioDeporteForUpdate ToDeporteForUpdate(
-        this UsuarioDeporteForUpdateDto dto);
+    public static partial DeporteForUpdate ToDeporteForUpdate(
+        this DeporteForUpdateDto dto);
 
-    public static partial UsuarioDeporteDto ToDeporteDto(this Deporte entity);
+    public static partial DeporteDto ToDeporteDto(this Deporte entity);
 
-    public static partial IQueryable<UsuarioDeporteDto>
+    public static partial IQueryable<DeporteDto>
         ToDeporteDtoQueryable(this IQueryable<Deporte> entity);
 }

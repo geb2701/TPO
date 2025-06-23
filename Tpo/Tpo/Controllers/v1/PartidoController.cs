@@ -11,14 +11,14 @@ namespace Tpo.Controllers.v1
     [ApiController]
     [Route("api/v{v:apiVersion}/[controller]")]
     [ApiVersion("1.0")]
-   
+    [Authorize]
     public class PartidoController(ILogger<PartidoController> logger, IMediator mediator) : ControllerBase
     {
         private readonly ILogger<PartidoController> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
         [HttpPost(Name = "PartidoAdd")]
-        public async Task<IActionResult> PartidoAdd([FromBody] PartidoForCreationDto dto)
+        public async Task<IActionResult> PartidoAdd([FromBody] PartidoHistorialForCreationDto dto)
         {
             var command = new AddPartido.Command(dto);
             var queryResponse = await _mediator.Send(command);
@@ -30,7 +30,7 @@ namespace Tpo.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetList([FromQuery] PartidoParametersDto parametersDto)
         {
-            var query = new GetPartidosList.Query(parametersDto);
+            var query = new GetPartidoList.Query(parametersDto);
             var queryResponse = await _mediator.Send(query);
 
             var paginationMetadata = new

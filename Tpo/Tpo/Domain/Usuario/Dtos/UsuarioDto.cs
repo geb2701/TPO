@@ -13,4 +13,13 @@ public sealed record UsuarioDto
     public string Contrasena { get; set; }
     public string Email { get; set; }
     public string Ubicacion { get; set; }
+    public List<HabilidadDto> Habilidades { get; set; } = [];
+    public EnumResponse TipoNotificacion { get; set; }
+}
+
+public sealed record HabilidadDto
+{
+    public int DeporteId { get; set; }
+    public string DeporteNombre { get; set; }
+    public EnumResponse Nivel { get; set; }
 }

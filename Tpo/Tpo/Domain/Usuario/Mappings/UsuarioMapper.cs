@@ -18,4 +18,16 @@ public static partial class UsuarioMapper
 
     public static partial IQueryable<UsuarioDto>
         ToUsuarioDtoQueryable(this IQueryable<Usuario> entity);
+
+    [UserMapping]
+    private static EnumResponse ToEnum(NivelHabilidad x) => x.ToEnumResponse();
+    [UserMapping]
+    private static EnumResponse ToEnum(TipoNotificacion x) => x.ToEnumResponse();
+
+    private static HabilidadDto ToHabilidadDto(UsuarioDeporte.UsuarioDeporte x) => new()
+    {
+        DeporteId = x.Deporte.Id,
+        DeporteNombre = x.Deporte.Nombre,
+        Nivel = x.Nivel.ToEnumResponse()
+    };
 }

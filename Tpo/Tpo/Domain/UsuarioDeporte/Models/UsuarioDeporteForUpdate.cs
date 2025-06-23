@@ -2,7 +2,7 @@ namespace Tpo.Domain.UsuarioDeporte.Models
 {
     public class UsuarioDeporteForUpdate
     {
-        public int DeporteId { get; set; }
-        public int Nivel { get; set; }
+        public NivelHabilidad Nivel { get; set; }
+        public bool Favorito { get; set; }
     }
 }

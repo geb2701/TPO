@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using MediatR;
+using SharedKernel.Databases;
 using Tpo.Domain.Partido.Dtos;
 using Tpo.Domain.Partido.Mappings;
 using Tpo.Domain.Partido.Services;
@@ -9,14 +10,14 @@ namespace Tpo.Domain.Partido.Features;
 
 public class AddPartido
 {
-    public sealed record Command(PartidoForCreationDto Dto) : IRequest<PartidoDto>;
+    public sealed record Command(PartidoHistorialForCreationDto Dto) : IRequest<PartidoDto>;
 
     public class AddPartidoValidator : AbstractValidator<Command>
     {
         public AddPartidoValidator()
         {
-            RuleFor(x => x.Dto.Nombre).Length(3, 50)
-                .WithMessage("El nombre debe tener entre 3 y 50 caracteres.");
+            /*RuleFor(x => x.Dto.Nombre).Length(3, 50)
+                .WithMessage("El nombre debe tener entre 3 y 50 caracteres.");*/
         }
     }
 
@@ -29,9 +30,6 @@ public class AddPartido
 
             var model = request.Dto.ToPartidoForCreation();
             var entity = Partido.Create(model);
-
-            if (repository.Query().Any(x => x.Nombre == entity.Nombre))
-                throw new ApplicationException("El Partido ya existe.");
 
             await repository.Add(entity, cancellationToken);
             await unitOfWork.CommitChanges(cancellationToken);

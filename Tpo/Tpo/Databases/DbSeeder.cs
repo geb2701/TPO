@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Tpo.Domain.Deporte;
+using Tpo.Domain.Deporte.Models;
 using Tpo.Domain.Usuario;
 using Tpo.Domain.Usuario.Models;
 
@@ -49,8 +49,18 @@ namespace Tpo.Databases
             };
 
             context.Usuario.AddRange(usuarios);
-            await context.SaveChangesAsync();
+            await context.SaveChangesSeedAsync();
 
+            var deportes = new List<Deporte>
+            {
+                Deporte.Create(new DeporteForCreation { Nombre = "Fútbol" }),
+                Deporte.Create(new DeporteForCreation { Nombre = "Básquet" }),
+                Deporte.Create(new DeporteForCreation { Nombre = "Tenis" })
+            };
+
+            context.Deporte.AddRange(deportes);
+
+            await context.SaveChangesSeedAsync();
         }
     }
 }

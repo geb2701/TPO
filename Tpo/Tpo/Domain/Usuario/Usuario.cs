@@ -1,14 +1,11 @@
 using SharedKernel.Domain.Entity;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using Tpo.Domain.Usuario.Models;
 
 namespace Tpo.Domain.Usuario
 {
     public class Usuario : BaseEntity<int>
     {
-        protected Usuario(){}
+        protected Usuario() { }
 
         public new int Id { get; internal set; } = default; //Ignorar
         public string UsuarioNombre { get; private set; }
@@ -16,13 +13,15 @@ namespace Tpo.Domain.Usuario
         public string Contrasena { get; private set; }
         public string Email { get; private set; }
         public string Ubicacion { get; private set; }
-
-        //[NotMapped] public List<UsuarioDeporte> Deportes { get; set; }
+        public List<UsuarioDeporte.UsuarioDeporte> Habilidades { get; private set; }
+        public List<Partido.Partido> Partidos { get; private set; }
+        public TipoNotificacion TipoNotificacion { get; private set; }
 
         public static Usuario Create(UsuarioForCreation userForCreation)
         {
             var newExample = new Usuario
             {
+                TipoNotificacion = userForCreation.TipoNotificacion,
                 UsuarioNombre = userForCreation.UsuarioNombre,
                 Nombre = userForCreation.Nombre,
                 Contrasena = userForCreation.Contrasena,
@@ -38,6 +37,7 @@ namespace Tpo.Domain.Usuario
             Nombre = model.Nombre;
             Contrasena = model.Contrasena;
             Ubicacion = model.Ubicacion;
+            TipoNotificacion = model.TipoNotificacion;
             return this;
         }
     }

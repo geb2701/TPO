@@ -11,27 +11,6 @@
             <typeparam name="TEntity">Tipo de la entidad.</typeparam>
             <typeparam name="TKey">Tipo de la clave primaria de la entidad.</typeparam>
         </member>
-        <member name="T:Tpo.Databases.EntityConfigurations.ApprovableEntityTypeConfiguration`2">
-            <summary>
-            Configuración para entidades aprobables.
-            </summary>
-            <typeparam name="TEntity">Tipo de la entidad.</typeparam>
-            <typeparam name="TKey">Tipo de la clave primaria de la entidad.</typeparam>
-        </member>
-        <member name="T:Tpo.Databases.EntityConfigurations.VersionableEntityTypeConfiguration`2">
-            <summary>
-            Configuración para entidades versionables.
-            </summary>
-            <typeparam name="TEntity">Tipo de la entidad.</typeparam>
-            <typeparam name="TKey">Tipo de la clave primaria de la entidad.</typeparam>
-        </member>
-        <member name="T:Tpo.Databases.EntityConfigurations.ApprovableVersionableEntityTypeConfiguration`2">
-            <summary>
-            Configuración para entidades aprobables y versionables.
-            </summary>
-            <typeparam name="TEntity">Tipo de la entidad.</typeparam>
-            <typeparam name="TKey">Tipo de la clave primaria de la entidad.</typeparam>
-        </member>
         <member name="T:Tpo.Databases.Repositorys.IRepositoryIncludableQueryable`2">
             <summary>
             Interfaz que define las operaciones del repositorio con consultas que incluyen propiedades relacionadas.

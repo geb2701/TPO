@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
 using MediatR;
 using SharedKernel.Databases;
-using Tpo.Domain.Deporte.Mappings;
 using Tpo.Domain.Deporte.Dtos;
+using Tpo.Domain.Deporte.Mappings;
 using Tpo.Domain.Deporte.Services;
 using Tpo.Extensions.Application;
 
@@ -31,7 +31,7 @@ public class UpdateDeporte
             var entity = await repository.GetById(request.Id, cancellationToken);
             var model = request.Dto.ToDeporteForUpdate();
 
-            entity.Update(model.Nombre); // Solo se actualiza el nombre
+            entity.Update(model);
 
             repository.Update(entity);
             await unitOfWork.CommitChanges(cancellationToken);

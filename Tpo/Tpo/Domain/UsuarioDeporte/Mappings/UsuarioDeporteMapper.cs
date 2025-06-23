@@ -1,27 +1,26 @@
+using Riok.Mapperly.Abstractions;
 using Tpo.Domain.UsuarioDeporte.Dtos;
 using Tpo.Domain.UsuarioDeporte.Models;
 
 namespace Tpo.Domain.UsuarioDeporte.Mappings
 {
-    public static class UsuarioDeporteMapper
+    [Mapper]
+    [UseStaticMapper(typeof(UsuarioDeporteMapper))]
+    public static partial class UsuarioDeporteMapper
     {
-        public static UsuarioDeporteForCreation ToUsuarioDeporteForCreation(this UsuarioDeporteForCreationDto dto)
-        {
-            return new UsuarioDeporteForCreation
-            {
-                UsuarioId = dto.UsuarioId,
-                DeporteId = dto.DeporteId,
-                Nivel = dto.Nivel
-            };
-        }
+        public static partial UsuarioDeporteForCreation ToUsuarioDeporteForCreation(
+            this UsuarioDeporteForCreationDto dto, Usuario.Usuario usuario, Deporte.Deporte deporte);
 
-        public static UsuarioDeporteForUpdate ToUsuarioDeporteForUpdate(this UsuarioDeporteForUpdateDto dto)
-        {
-            return new UsuarioDeporteForUpdate
-            {
-                DeporteId = dto.DeporteId,
-                Nivel = dto.Nivel
-            };
-        }
+        public static partial UsuarioDeporteForUpdate ToUsuarioDeporteForUpdate(
+            this UsuarioDeporteForUpdateDto dto);
+
+        [MapProperty([nameof(UsuarioDeporte.Usuario), nameof(Usuario.Usuario.Id)], nameof(UsuarioDeporteDto.UsuarioId))]
+        [MapProperty([nameof(UsuarioDeporte.Usuario), nameof(Usuario.Usuario.UsuarioNombre)], nameof(UsuarioDeporteDto.UsuarioNombre))]
+        [MapProperty([nameof(UsuarioDeporte.Deporte), nameof(Deporte.Deporte.Id)], nameof(UsuarioDeporteDto.DeporteId))]
+        [MapProperty([nameof(UsuarioDeporte.Deporte), nameof(Deporte.Deporte.Nombre)], nameof(UsuarioDeporteDto.DeporteNombre))]
+        public static partial UsuarioDeporteDto ToUsuarioDeporteDto(this UsuarioDeporte entity);
+
+        [UserMapping]
+        private static EnumResponse ToEnum(NivelHabilidad x) => x.ToEnumResponse();
     }
 }

@@ -1,5 +1,4 @@
-﻿using SharedKernel.Domain.Entity;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 public static class EnumExtensions
 {
@@ -34,9 +33,6 @@ public static class EnumExtensions
             throw new ArgumentException($"Invalid value {value} for {typeof(TEnum).Name}", nameof(value));
         }
     }
-
-    public static EnumResponse EnumMap(EntityStatusType enumValue)
-      => enumValue.ToEnumResponse();
 }
 
 public class EnumResponse

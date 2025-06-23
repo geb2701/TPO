@@ -1,12 +1,10 @@
-﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using SharedKernel.Domain.Entity;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq.Expressions;
 using Tpo.Domain.Deporte;
 using Tpo.Domain.Usuario;
-using Tpo.Domain.Usuario.Models;
 using Tpo.Services;
 
 namespace Tpo.Databases;
@@ -20,6 +18,7 @@ public sealed class TpoDbContext(DbContextOptions<TpoDbContext> options,
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(TpoDbContext).Assembly);
         modelBuilder.FilterSoftDeletedRecords();
     }
 
@@ -37,10 +36,17 @@ public sealed class TpoDbContext(DbContextOptions<TpoDbContext> options,
         return result;
     }
 
-    private void UpdateAuditFields()
+    public async Task<int> SaveChangesSeedAsync(CancellationToken cancellationToken = new())
+    {
+        UpdateAuditFieldsSeed();
+        var result = await base.SaveChangesAsync(cancellationToken);
+        return result;
+    }
+
+    private void UpdateAuditFieldsSeed()
     {
         var now = DateTime.UtcNow;
-        
+
         foreach (var entry in ChangeTracker.Entries<IBaseEntity>())
             switch (entry.State)
             {
@@ -51,32 +57,49 @@ public sealed class TpoDbContext(DbContextOptions<TpoDbContext> options,
                     }
                     else
                     {
-                        var userAdd = currentUsuarioService.GetUsuario();
-                        entry.Entity.UpdateCreationProperties(now, userAdd.UsuarioNombre);
+                        entry.Entity.UpdateCreationProperties(now, "System");
                     }
                     break;
 
                 case EntityState.Modified:
-                    var user = currentUsuarioService.GetUsuario();
-                    if (entry.Entity is IApprovableEntity approvableEntity)
-                    {
-                        var originalStatus = entry.OriginalValues[nameof(IApprovableEntity.Status)];
-                        if (!Equals(originalStatus, approvableEntity.Status))
-                        {
+                    entry.Entity.UpdateModifiedProperties(now, "System");
 
-                            approvableEntity.UpdateApprovedProperties(now, user.UsuarioNombre);
-                        }
-                    }
-                    else
-                    {
-                        entry.Entity.UpdateModifiedProperties(now, user.UsuarioNombre);
-                    }
                     break;
 
                 case EntityState.Deleted:
-                    var userDelete = currentUsuarioService.GetUsuario();
                     entry.State = EntityState.Modified;
-                    entry.Entity.UpdateModifiedProperties(now, userDelete.UsuarioNombre);
+                    entry.Entity.UpdateModifiedProperties(now, "System");
+                    entry.Entity.UpdateIsDeleted(true);
+                    break;
+            }
+    }
+
+    private void UpdateAuditFields()
+    {
+        var now = DateTime.UtcNow;
+        var nombre = currentUsuarioService.GetUsuarioNombre();
+        foreach (var entry in ChangeTracker.Entries<IBaseEntity>())
+            switch (entry.State)
+            {
+                case EntityState.Added:
+                    if (entry.Entity is Usuario userCreated)
+                    {
+                        entry.Entity.UpdateCreationProperties(now, userCreated.UsuarioNombre);
+                    }
+                    else
+                    {
+                        entry.Entity.UpdateCreationProperties(now, nombre);
+                    }
+                    break;
+
+                case EntityState.Modified:
+                    entry.Entity.UpdateModifiedProperties(now, nombre);
+
+                    break;
+
+                case EntityState.Deleted:
+                    entry.State = EntityState.Modified;
+                    entry.Entity.UpdateModifiedProperties(now, nombre);
                     entry.Entity.UpdateIsDeleted(true);
                     break;
             }

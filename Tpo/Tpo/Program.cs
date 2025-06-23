@@ -13,6 +13,7 @@ using Tpo.Extensions.Application;
 using Tpo.Extensions.Services;
 using Tpo.Middleware;
 using Tpo.Services.Jwt;
+using Tpo.Workers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -80,6 +81,7 @@ builder.Services.AddAuthentication(options =>
                };
            }
         );
+builder.Services.AddHostedService<PartidoWorker>();
 
 var app = builder.Build();
 

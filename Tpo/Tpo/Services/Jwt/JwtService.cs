@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.IdentityModel.Tokens;
 using SharedKernel.Services;
 using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
@@ -15,7 +14,7 @@ namespace Tpo.Services.Jwt;
 /// <summary>
 /// Interfaz para utilidades relacionadas con JWT, como generación, validación y carga de tokens.
 /// </summary>
-public interface IJwtUtils: IScopedService
+public interface IJwtUtils : IScopedService
 {
     /// <summary>
     /// Genera un token JWT a partir de un usuario.
@@ -59,7 +58,7 @@ public interface IJwtUtils: IScopedService
 /// </summary>
 internal class JwtUtils(IUsuarioRepository userRepository) : IJwtUtils
 {
-    public static readonly string JwtSecretKey = RandomStringGenerator.GenerateRandomString(32);
+    public static readonly string JwtSecretKey = "yFi9MX34ODfOW2RMtYgqGzinYLsbD8He"; //RandomStringGenerator.GenerateRandomString(32);
     private readonly Byte[] Key = Encoding.ASCII.GetBytes(JwtSecretKey);
     /// <inheritdoc/>
     public string GenerateJwtToken(Usuario user)
@@ -70,7 +69,7 @@ internal class JwtUtils(IUsuarioRepository userRepository) : IJwtUtils
         PropertyInfo[] properties = typeof(Usuario).GetProperties(BindingFlags.Public | BindingFlags.Instance);
         foreach (PropertyInfo property in properties)
         {
-            if (property.CanRead && property.CanWrite)
+            if (property.CanRead && property.CanWrite && property.Name != nameof(Usuario.Habilidades))
             {
                 var value = property.GetValue(user);
                 claims.Add(new Claim(property.Name, value != null ? JsonSerializer.Serialize(value)! : ""));
@@ -160,7 +159,7 @@ internal class JwtUtils(IUsuarioRepository userRepository) : IJwtUtils
         foreach (PropertyInfo property in properties)
         {
 
-            if (property.CanRead && property.CanWrite)
+            if (property.CanRead && property.CanWrite && property.Name != nameof(Usuario.Habilidades))
             {
                 var claim = validatedToken?.Claims.FirstOrDefault(x => x.Key == property.Name);
                 if (claim != null)

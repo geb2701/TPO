@@ -7,5 +7,6 @@ namespace Tpo.Domain.Usuario.Dtos
         public string Contrasena { get; set; }
         public string Email { get; set; }
         public string Ubicacion { get; set; }
+        public TipoNotificacion TipoNotificacion { get; set; }
     }
 }

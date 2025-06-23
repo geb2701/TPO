@@ -1,10 +1,9 @@
-using SharedKernel.Databases;
 using Tpo.Databases;
 using Tpo.Databases.Repositorys;
 
 namespace Tpo.Domain.Partido.Services;
 
-public interface IPartidoRepository : IGenericRepository<Partido, int>
+public interface IPartidoRepository : IRepositoryIncludableQueryable<Partido, int>
 {
 }
 

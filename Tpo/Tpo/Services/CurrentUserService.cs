@@ -1,27 +1,42 @@
 using SharedKernel.Services;
-using System.Security.Claims;
 using Tpo.Domain.Usuario;
 
 namespace Tpo.Services;
 
 public interface ICurrentUsuarioService : IScopedService
 {
-    Usuario GetUsuario();
+    int GetUsuarioId();
+    string GetUsuarioNombre();
 }
 
 public class CurrentUsuarioService(IHttpContextAccessor httpContextAccessor) : ICurrentUsuarioService
 {
-    public Usuario GetUsuario()
+    public int GetUsuarioId()
     {
         try
         {
             httpContextAccessor!.HttpContext!.Items.TryGetValue("Usuario", out var _user);
             var user = _user as Usuario;
-            return user!;
+
+            return user.Id;
         }
         catch (Exception ex)
         {
             throw new Exception(ex.Message);
+        }
+    }
+    public string GetUsuarioNombre()
+    {
+        try
+        {
+            httpContextAccessor!.HttpContext!.Items.TryGetValue("Usuario", out var _user);
+            var user = _user as Usuario;
+
+            return user.UsuarioNombre;
+        }
+        catch (Exception)
+        {
+            return null;
         }
     }
 }

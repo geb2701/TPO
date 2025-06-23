@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
 using MediatR;
 using SharedKernel.Databases;
-using Tpo.Domain.Partido.Mappings;
 using Tpo.Domain.Partido.Dtos;
+using Tpo.Domain.Partido.Mappings;
 using Tpo.Domain.Partido.Services;
 using Tpo.Extensions.Application;
 
@@ -10,7 +10,7 @@ namespace Tpo.Domain.Partido.Features;
 
 public class UpdatePartido
 {
-    public sealed record Command(int Id, UpdatePartidoDto Dto) : IRequest;
+    public sealed record Command(int Id, PartidoForUpdateDto Dto) : IRequest;
 
     public class UpdatePartidoValidator : AbstractValidator<Command>
     {
@@ -19,9 +19,6 @@ public class UpdatePartido
             RuleFor(x => x.Dto.Nombre)
                 .NotEmpty().WithMessage("El nombre es obligatorio.")
                 .Length(3, 50).WithMessage("El nombre debe tener entre 3 y 50 caracteres.");
-
-            RuleFor(x => x.Dto.Dificultad)
-                .InclusiveBetween(1, 10).WithMessage("La dificultad debe estar entre 1 y 10.");
         }
     }
 
@@ -46,7 +43,7 @@ public class UpdatePartido
             var entity = await _repository.GetById(request.Id, cancellationToken);
             var model = request.Dto.ToPartidoForUpdate();
 
-            entity.Update(model);
+            //entity.Update(model);
 
             _repository.Update(entity);
             await _unitOfWork.CommitChanges(cancellationToken);

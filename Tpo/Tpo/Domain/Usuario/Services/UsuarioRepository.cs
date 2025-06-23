@@ -1,10 +1,9 @@
-using SharedKernel.Databases;
 using Tpo.Databases;
 using Tpo.Databases.Repositorys;
 
 namespace Tpo.Domain.Usuario.Services;
 
-public interface IUsuarioRepository : IGenericRepository<Usuario, int>
+public interface IUsuarioRepository : IRepositoryIncludableQueryable<Usuario, int>
 {
 }
 

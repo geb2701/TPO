@@ -1,8 +1,8 @@
 using FluentValidation;
 using MediatR;
 using SharedKernel.Databases;
-using Tpo.Domain.Usuario.Mappings;
 using Tpo.Domain.Usuario.Dtos;
+using Tpo.Domain.Usuario.Mappings;
 using Tpo.Domain.Usuario.Services;
 using Tpo.Extensions.Application;
 
@@ -31,32 +31,21 @@ public class UpdateUsuario
         }
     }
 
-    public sealed class Handler : IRequestHandler<Command>
+    public sealed class Handler(IUsuarioRepository repository, IUnitOfWork unitOfWork,
+        UpdateUsuarioValidator validator) : IRequestHandler<Command>
     {
-        private readonly IUsuarioRepository _repository;
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly UpdateUsuarioValidator _validator;
-
-        public Handler(IUsuarioRepository repository, IUnitOfWork unitOfWork,
-            UpdateUsuarioValidator validator)
-        {
-            _repository = repository;
-            _unitOfWork = unitOfWork;
-            _validator = validator;
-        }
-
         public async Task Handle(Command request, CancellationToken cancellationToken)
         {
-            _validator.ValidateAndThrowValidationException(request);
+            validator.ValidateAndThrowValidationException(request);
 
             var entity =
-                await _repository.GetById(request.Id, cancellationToken);
+                await repository.GetById(request.Id, cancellationToken);
             var model = request.Dto.ToUsuarioForUpdate();
 
             entity.Update(model);
 
-            _repository.Update(entity);
-            await _unitOfWork.CommitChanges(cancellationToken);
+            repository.Update(entity);
+            await unitOfWork.CommitChanges(cancellationToken);
         }
     }
 }

@@ -1,11 +1,12 @@
-﻿using SharedKernel.Databases;
 using Tpo.Databases;
+using Tpo.Databases.Repositorys;
 
 namespace Tpo.Domain.UsuarioDeporte.Services;
 
-public class UsuarioDeporteRepository : Repository<UsuarioDeporte>, IUsuarioDeporteRepository
+public interface IUsuarioDeporteRepository : IRepositoryIncludableQueryable<UsuarioDeporte, int>
 {
-    public UsuarioDeporteRepository(TpoDbContext context) : base(context)
-    {
-    }
+}
+
+public sealed class UsuarioDeporteRepository(TpoDbContext dbContext) : GenericRepository<UsuarioDeporte, int>(dbContext), IUsuarioDeporteRepository
+{
 }

@@ -1,4 +1,4 @@
-namespace Tpo.Domain.Deporte.Dtos;
+namespace Tpo.Domain.UsuarioDeporte.Dtos;
 
 public sealed record UsuarioDeporteDto
 {
@@ -10,5 +10,10 @@ public sealed record UsuarioDeporteDto
     public bool IsDeleted { get; set; }
 
     // Atributos de la clase UsuarioDeporte
-    public string Nombre { get; set; }
+    public int UsuarioId { get; set; }
+    public string UsuarioNombre { get; set; }
+    public int DeporteId { get; set; }
+    public string DeporteNombre { get; set; }
+    public EnumResponse Nivel { get; set; }
+    public bool Favorito { get; set; }
 }

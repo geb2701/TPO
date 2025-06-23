@@ -1,25 +1,25 @@
 ﻿using Asp.Versioning;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Tpo.Domain.Usuario.Features;
-using Tpo.Domain.Usuario.Dtos;
 using System.Text.Json;
+using Tpo.Domain.Usuario.Dtos;
+using Tpo.Domain.Usuario.Features;
 
 namespace Tpo.Controllers.v1
 {
     [ApiController]
     [Route("api/v{v:apiVersion}/[controller]")]
     [ApiVersion("1.0")]
-    public class UsuarioDeporteController(ILogger<UsuarioDeporteController> logger, IMediator mediator) : ControllerBase
+    public class UsuarioController(ILogger<UsuarioController> logger, IMediator mediator) : ControllerBase
     {
-        private readonly ILogger<UsuarioDeporteController> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+        private readonly ILogger<UsuarioController> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
         [HttpPost("Register", Name = "UsuarioRegister")]
         public async Task<ActionResult<UsuarioDto>> Register([FromBody] UsuarioForCreationDto dto)
         {
             var command = new AddUsuario.Command(dto);
-            var commandResponse = await _mediator.Send(command);
+            var commandResponse = await mediator.Send(command);
             return Ok(commandResponse);
         }
 
@@ -27,16 +27,15 @@ namespace Tpo.Controllers.v1
         public async Task<ActionResult<string>> Get([FromBody] UsuarioLoginDto userLoginDto)
         {
             var command = new LoginUsuario.Command(userLoginDto);
-            var commandResponse = await _mediator.Send(command);
+            var commandResponse = await mediator.Send(command);
             return Ok(commandResponse);
         }
 
         [HttpGet(Name = "GetUsuarios")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetList([FromQuery] UsuarioParametersDto parametersDto)
         {
             var query = new GetUsuariosList.Query(parametersDto);
-            var queryResponse = await _mediator.Send(query);
+            var queryResponse = await mediator.Send(query);
 
             var paginationMetadata = new
             {
@@ -56,12 +55,22 @@ namespace Tpo.Controllers.v1
             return Ok(queryResponse);
         }
 
+        [HttpGet("{id}", Name = "GetUsuario")]
+        public async Task<IActionResult> GetList([FromRoute] int id)
+        {
+            var query = new GetUsuario.Query(id);
+            var queryResponse = await mediator.Send(query);
 
-        [HttpPut("{id}", Name = "Update")]
-        public async Task<ActionResult<UsuarioDto>> Update([FromRoute] int id, [FromBody] UsuarioForUpdateDto dto)
+            return Ok(queryResponse);
+        }
+
+
+        [HttpPut("{id}", Name = "UpdateUsuario")]
+        [Authorize]
+        public async Task<ActionResult> Update([FromRoute] int id, [FromBody] UsuarioForUpdateDto dto)
         {
             var command = new UpdateUsuario.Command(id, dto);
-            await _mediator.Send(command);
+            await mediator.Send(command);
             return Ok();
         }
     }

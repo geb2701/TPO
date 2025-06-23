@@ -1,6 +1,6 @@
 namespace Tpo.Domain.Deporte.Dtos
 {
-    public sealed record UsuarioDeporteForCreationDto
+    public sealed record DeporteForCreationDto
     {
         public string Nombre { get; set; }
     }
