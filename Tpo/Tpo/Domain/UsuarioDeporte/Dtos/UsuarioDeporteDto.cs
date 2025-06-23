@@ -9,6 +9,6 @@ public sealed record UsuarioDeporteDto
     public string LastModifiedBy { get; set; }
     public bool IsDeleted { get; set; }
 
-    // Atributos de la clase deporte
+    // Atributos de la clase UsuarioDeporte
     public string Nombre { get; set; }
 }

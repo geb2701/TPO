@@ -1,6 +1,6 @@
 namespace Tpo.Domain.Deporte.Models;
 
-public sealed record DeporteForCreation
+public sealed record UsuarioDeporteForCreation
 {
     public string Nombre { get; set; }
 }

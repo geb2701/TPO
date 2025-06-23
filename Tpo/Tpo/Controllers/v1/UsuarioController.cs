@@ -10,9 +10,9 @@ namespace Tpo.Controllers.v1
     [ApiController]
     [Route("api/v{v:apiVersion}/[controller]")]
     [ApiVersion("1.0")]
-    public class UsuarioController(ILogger<UsuarioController> logger, IMediator mediator) : ControllerBase
+    public class UsuarioDeporteController(ILogger<UsuarioDeporteController> logger, IMediator mediator) : ControllerBase
     {
-        private readonly ILogger<UsuarioController> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        private readonly ILogger<UsuarioDeporteController> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
         [HttpPost("Register", Name = "UsuarioRegister")]
@@ -56,13 +56,13 @@ namespace Tpo.Controllers.v1
             return Ok(queryResponse);
         }
 
-        /*
-        [HttpPut("Edit", Name = "Usuario")]
-        public async Task<ActionResult<UsuarioDto>> Edit(int id)
+
+        [HttpPut("{id}", Name = "Update")]
+        public async Task<ActionResult<UsuarioDto>> Update([FromRoute] int id, [FromBody] UsuarioForUpdateDto dto)
         {
-            var query = new GetUsuario.Query(id);
-            var queryResponse = await _mediator.Send(query);
-            return Ok(queryResponse);
-        }*/
+            var command = new UpdateUsuario.Command(id, dto);
+            await _mediator.Send(command);
+            return Ok();
+        }
     }
 }
