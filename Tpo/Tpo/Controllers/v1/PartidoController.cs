@@ -28,7 +28,7 @@ namespace Tpo.Controllers.v1
 
         [HttpGet(Name = "GetPartidos")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetList([FromQuery] PartidosParametersDto parametersDto)
+        public async Task<IActionResult> GetList([FromQuery] PartidoParametersDto parametersDto)
         {
             var query = new GetPartidosList.Query(parametersDto);
             var queryResponse = await _mediator.Send(query);

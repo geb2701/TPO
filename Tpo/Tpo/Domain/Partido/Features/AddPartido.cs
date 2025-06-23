@@ -11,9 +11,9 @@ public class AddPartido
 {
     public sealed record Command(PartidoForCreationDto Dto) : IRequest<PartidoDto>;
 
-    public class AddDeporteValidator : AbstractValidator<Command>
+    public class AddPartidoValidator : AbstractValidator<Command>
     {
-        public AddDeporteValidator()
+        public AddPartidoValidator()
         {
             RuleFor(x => x.Dto.Nombre).Length(3, 50)
                 .WithMessage("El nombre debe tener entre 3 y 50 caracteres.");

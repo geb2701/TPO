@@ -1,20 +1,20 @@
 ﻿using FluentValidation;
 using MediatR;
 using SharedKernel.Databases;
-using Tpo.Domain.Deporte.Mappings;
-using Tpo.Domain.Deporte.Dtos;
-using Tpo.Domain.Deporte.Services;
+using Tpo.Domain.Partido.Mappings;
+using Tpo.Domain.Partido.Dtos;
+using Tpo.Domain.Partido.Services;
 using Tpo.Extensions.Application;
 
-namespace Tpo.Domain.Deporte.Features;
+namespace Tpo.Domain.Partido.Features;
 
-public class UpdateDeporte
+public class UpdatePartido
 {
-    public sealed record Command(int Id, UpdateDeporteDto Dto) : IRequest;
+    public sealed record Command(int Id, UpdatePartidoDto Dto) : IRequest;
 
-    public class UpdateDeporteValidator : AbstractValidator<Command>
+    public class UpdatePartidoValidator : AbstractValidator<Command>
     {
-        public UpdateDeporteValidator()
+        public UpdatePartidoValidator()
         {
             RuleFor(x => x.Dto.Nombre)
                 .NotEmpty().WithMessage("El nombre es obligatorio.")
@@ -27,12 +27,12 @@ public class UpdateDeporte
 
     public sealed class Handler : IRequestHandler<Command>
     {
-        private readonly IDeporteRepository _repository;
+        private readonly IPartidoRepository _repository;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly UpdateDeporteValidator _validator;
+        private readonly UpdatePartidoValidator _validator;
 
-        public Handler(IDeporteRepository repository, IUnitOfWork unitOfWork,
-            UpdateDeporteValidator validator)
+        public Handler(IPartidoRepository repository, IUnitOfWork unitOfWork,
+            UpdatePartidoValidator validator)
         {
             _repository = repository;
             _unitOfWork = unitOfWork;
@@ -44,7 +44,7 @@ public class UpdateDeporte
             _validator.ValidateAndThrowValidationException(request);
 
             var entity = await _repository.GetById(request.Id, cancellationToken);
-            var model = request.Dto.ToDeporteForUpdate();
+            var model = request.Dto.ToPartidoForUpdate();
 
             entity.Update(model);
 
