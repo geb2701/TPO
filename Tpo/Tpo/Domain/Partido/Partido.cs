@@ -1,4 +1,5 @@
 ﻿using SharedKernel.Domain.Entity;
+using System.ComponentModel.DataAnnotations.Schema;
 using Tpo.Domain.Jugador;
 using Tpo.Domain.Jugador.Models;
 using Tpo.Domain.Partido.Models;
@@ -8,14 +9,15 @@ namespace Tpo.Domain.Partido
     public class Partido : BaseEntity<int>, IJugadorObserver
     {
         protected Partido() { }
-        public IPartidoState Estado { get; private set; } = new NecesitamosJugadoresState();
+        public string EstadoNombre { get; private set; }
+        [NotMapped] public IPartidoState Estado { get; private set; } = new NecesitamosJugadoresState();
         public DateTime FechaHora { get; private set; }
         public TimeSpan Duracion { get; private set; } = TimeSpan.FromMinutes(90);
         public string Ubicacion { get; private set; }
         public int CantidadParticipantes { get; private set; }
         public List<Jugador.Jugador> Jugadores { get; private set; } = [];
         public Deporte.Deporte Deporte { get; private set; }
-        public NivelHabilidad NivelMinimo { get; private set; } = NivelHabilidad.Basico;
+        public NivelHabilidad NivelMinimo { get; private set; } = NivelHabilidad.Principiante;
         public NivelHabilidad NivelMaximo { get; private set; } = NivelHabilidad.Experto;
         public int PartidosMinimosJugados { get; private set; } = 0;
         public IEstrategiaEmparejamiento EstrategiaEmparejamiento { get; private set; }
@@ -24,6 +26,7 @@ namespace Tpo.Domain.Partido
         {
             return new Partido
             {
+                EstadoNombre = new NecesitamosJugadoresState().Nombre,
                 FechaHora = partidoForCreation.FechaHora,
                 Ubicacion = partidoForCreation.Ubicacion,
                 CantidadParticipantes = partidoForCreation.CantidadParticipantes,
@@ -42,10 +45,12 @@ namespace Tpo.Domain.Partido
         {
             Estado.Cancelar(this);
         }
-        public void CambiarEstado(IPartidoState nuevoEstado)
+        public void CambiarEstado(IPartidoState nuevoEstado, bool notificar = true)
         {
             Estado = nuevoEstado;
-            NotificarObservers();
+            EstadoNombre = nuevoEstado.Nombre;
+            if (notificar)
+                NotificarObservers();
         }
         private void NotificarObservers()
         {
@@ -61,7 +66,7 @@ namespace Tpo.Domain.Partido
             if (Estado is not NecesitamosJugadoresState)
                 throw new InvalidOperationException("No se pueden agregar jugadores en el estado actual del partido.");
 
-            if (Jugadores.Count >= CantidadParticipantes)
+            if (TieneJugadoresSuficientes())
                 throw new InvalidOperationException("El partido ya tiene la cantidad máxima de participantes.");
 
             if (Jugadores.Any(j => j.Usuario.Id == usuario.Id))
@@ -106,10 +111,16 @@ namespace Tpo.Domain.Partido
 
         public void OnJugadorAgregado(Jugador.Jugador jugador)
         {
+            Jugadores.Add(jugador);
             if (Estado is NecesitamosJugadoresState && TieneJugadoresSuficientes())
             {
                 AvanzarEstado();
             }
+        }
+
+        public void Emparejamiento(IEnumerable<Usuario.Usuario> candidatos)
+        {
+            EstrategiaEmparejamiento.SeleccionarEInscribirJugadores(this, candidatos);
         }
     }
 }

@@ -1,4 +1,5 @@
 using SharedKernel.Domain.Entity;
+using Tpo.Domain.Partido;
 using Tpo.Domain.Usuario.Models;
 
 namespace Tpo.Domain.Usuario
@@ -47,6 +48,8 @@ namespace Tpo.Domain.Usuario
             {
                 var partido = j.Partido;
                 if (partido == null)
+                    return false;
+                if (partido.Estado is CanceladoState)
                     return false;
                 var otroInicio = partido.FechaHora;
                 var otroFin = partido.FechaHora + partido.Duracion;

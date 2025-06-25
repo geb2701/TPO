@@ -4,15 +4,15 @@ namespace Tpo.Domain.Partido
     public interface IEstrategiaEmparejamiento
     {
         string Nombre { get; }
-        List<Usuario.Usuario> SeleccionarJugadoresValidos(Partido partido, List<Usuario.Usuario> candidatos);
-        List<Jugador.Jugador> SeleccionarEInscribirJugadores(Partido partido, List<Usuario.Usuario> candidatos);
+        List<Usuario.Usuario> SeleccionarJugadoresValidos(Partido partido, IEnumerable<Usuario.Usuario> candidatos);
+        List<Jugador.Jugador> SeleccionarEInscribirJugadores(Partido partido, IEnumerable<Usuario.Usuario> candidatos);
     }
 
     public class EmparejamientoPorNivel : IEstrategiaEmparejamiento
     {
         public string Nombre => "PorNivel";
 
-        public List<Jugador.Jugador> SeleccionarEInscribirJugadores(Partido partido, List<Usuario.Usuario> candidatos)
+        public List<Jugador.Jugador> SeleccionarEInscribirJugadores(Partido partido, IEnumerable<Usuario.Usuario> candidatos)
         {
             var candidatosValidos = SeleccionarJugadoresValidos(partido, candidatos);
 
@@ -23,7 +23,7 @@ namespace Tpo.Domain.Partido
             return partido.Jugadores;
         }
 
-        public List<Usuario.Usuario> SeleccionarJugadoresValidos(Partido partido, List<Usuario.Usuario> candidatos)
+        public List<Usuario.Usuario> SeleccionarJugadoresValidos(Partido partido, IEnumerable<Usuario.Usuario> candidatos)
         {
             var usuariosYaAnotados = partido.Jugadores.Select(j => j.UsuarioId).ToHashSet();
 
@@ -52,7 +52,7 @@ namespace Tpo.Domain.Partido
     public class EmparejamientoPorCercania : IEstrategiaEmparejamiento
     {
         public string Nombre => "PorCercania";
-        public List<Jugador.Jugador> SeleccionarEInscribirJugadores(Partido partido, List<Usuario.Usuario> candidatos)
+        public List<Jugador.Jugador> SeleccionarEInscribirJugadores(Partido partido, IEnumerable<Usuario.Usuario> candidatos)
         {
             var candidatosValidos = SeleccionarJugadoresValidos(partido, candidatos);
 
@@ -62,7 +62,7 @@ namespace Tpo.Domain.Partido
 
             return partido.Jugadores;
         }
-        public List<Usuario.Usuario> SeleccionarJugadoresValidos(Partido partido, List<Usuario.Usuario> candidatos)
+        public List<Usuario.Usuario> SeleccionarJugadoresValidos(Partido partido, IEnumerable<Usuario.Usuario> candidatos)
         {
             var usuariosYaAnotados = partido.Jugadores.Select(j => j.UsuarioId).ToHashSet();
 
@@ -76,7 +76,7 @@ namespace Tpo.Domain.Partido
     public class EmparejamientoPorHistorial : IEstrategiaEmparejamiento
     {
         public string Nombre => "PorHistorial";
-        public List<Jugador.Jugador> SeleccionarEInscribirJugadores(Partido partido, List<Usuario.Usuario> candidatos)
+        public List<Jugador.Jugador> SeleccionarEInscribirJugadores(Partido partido, IEnumerable<Usuario.Usuario> candidatos)
         {
             var candidatosValidos = SeleccionarJugadoresValidos(partido, candidatos);
 
@@ -86,7 +86,7 @@ namespace Tpo.Domain.Partido
 
             return partido.Jugadores;
         }
-        public List<Usuario.Usuario> SeleccionarJugadoresValidos(Partido partido, List<Usuario.Usuario> candidatos)
+        public List<Usuario.Usuario> SeleccionarJugadoresValidos(Partido partido, IEnumerable<Usuario.Usuario> candidatos)
         {
             var usuariosYaAnotados = partido.Jugadores.Select(j => j.UsuarioId).ToHashSet();
 

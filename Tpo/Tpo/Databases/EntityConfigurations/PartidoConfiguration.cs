@@ -23,11 +23,10 @@ namespace Tpo.Databases.EntityConfigurations
             var estrategiaConverter = new ValueConverter<IEstrategiaEmparejamiento, string>(
                v => EstrategiaEmparejamientoParser.GetNombre(v),
                v => EstrategiaEmparejamientoParser.Parse(v)
-           );
+            );
 
             builder
-                .Property(p => p.Estado)
-                .HasConversion(estadoConverter)
+                .Property(p => p.EstadoNombre)
                 .HasColumnName("Estado")
                 .IsRequired();
 
@@ -40,7 +39,7 @@ namespace Tpo.Databases.EntityConfigurations
             builder
                 .HasMany(u => u.Jugadores)
                 .WithOne(ud => ud.Partido)
-                .HasForeignKey(ud => ud.Id);
+                .HasForeignKey(ud => ud.PartidoId);
         }
 
         private static class EstrategiaEmparejamientoParser

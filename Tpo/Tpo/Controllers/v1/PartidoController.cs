@@ -41,6 +41,13 @@ namespace Tpo.Controllers.v1
             return Ok(response);
         }
 
+        [HttpPost("MatchMaking/{id}", Name = "MatchMaking")]
+        public async Task<IActionResult> MatchMaking([FromRoute] int id)
+        {
+            var query = new MatchMakingPartido.Query(id);
+            var response = await _mediator.Send(query);
+            return Ok(response);
+        }
 
         [HttpGet(Name = "GetPartidos")]
         [ProducesResponseType(StatusCodes.Status200OK)]

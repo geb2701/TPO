@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using QueryKit;
 using QueryKit.Configuration;
 using Tpo.Domain.Partido.Dtos;
@@ -15,7 +16,7 @@ public static class GetPartidoList
     {
         public async Task<PagedList<PartidoDto>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var collection = repository.Query();
+            var collection = repository.Query(cancellationToken: cancellationToken, includes: x => x.Include(y => y.Jugadores).ThenInclude(y => y.Usuario).Include(y => y.Deporte));
 
             var queryKitConfig = new CustomQueryKitConfiguration();
             var queryKitData = new QueryKitData

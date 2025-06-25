@@ -19,7 +19,7 @@ namespace Tpo.Workers
             {
                 var ahora = DateTime.Now;
                 var partidosConfimados = partidoRepository
-                    .Query(x => x.FechaHora <= ahora, true, stoppingToken,
+                    .Query(x => x.FechaHora < ahora, true, stoppingToken,
                         q => q.Include(p => p.Jugadores).ThenInclude(j => j.Usuario))
                     .AsEnumerable()
                     .Where(x => x.Estado is ConfirmadoState)
@@ -31,7 +31,7 @@ namespace Tpo.Workers
                 }
 
                 var partidosCompletados = partidoRepository
-                    .Query(x => x.FechaHora + x.Duracion <= ahora, true, stoppingToken,
+                    .Query(x => x.FechaHora + x.Duracion < ahora, true, stoppingToken,
                         q => q.Include(p => p.Jugadores).ThenInclude(j => j.Usuario))
                     .AsEnumerable()
                     .Where(x => x.Estado is EnJuegoState)
@@ -43,7 +43,7 @@ namespace Tpo.Workers
                 }
 
                 var partidosACancelar = partidoRepository
-                    .Query(x => x.FechaHora + x.Duracion >= ahora, true, stoppingToken,
+                    .Query(x => x.FechaHora + x.Duracion < ahora, true, stoppingToken,
                         q => q.Include(p => p.Jugadores).ThenInclude(j => j.Usuario))
                     .AsEnumerable()
                     .Where(x => x.Estado is ConfirmadoState || x.Estado is PartidoArmadoState || x.Estado is NecesitamosJugadoresState)

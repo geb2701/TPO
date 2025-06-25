@@ -23,11 +23,19 @@ public static partial class UsuarioMapper
     private static EnumResponse ToEnum(NivelHabilidad x) => x.ToEnumResponse();
     [UserMapping]
     private static EnumResponse ToEnum(TipoNotificacion x) => x.ToEnumResponse();
-
+    [UserMapping]
     private static HabilidadDto ToHabilidadDto(UsuarioDeporte.UsuarioDeporte x) => new()
     {
         DeporteId = x.Deporte.Id,
         DeporteNombre = x.Deporte.Nombre,
         Nivel = x.Nivel.ToEnumResponse()
+    };
+    [UserMapping]
+    private static ParticipanteDto ToParticipanteDto(Jugador.Jugador x) => new()
+    {
+        DeporteId = x.Partido.Deporte.Id,
+        DeporteNombre = x.Partido.Deporte.Nombre,
+        PartidoId = x.Partido.Id,
+        PartidoEstado = x.Partido.Estado.Nombre
     };
 }

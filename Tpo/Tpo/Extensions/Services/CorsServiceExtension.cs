@@ -19,9 +19,8 @@ public static class CorsServiceExtension
     {
         var origins = new List<string>()
         {
-            ".dbna.net",
-            ".tbna.net",
-            ".bna.net",
+            ".net",
+            ".com",
             "localhost"
         };
         return origins.Any(y => origin.Contains(y));

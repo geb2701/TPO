@@ -7,7 +7,7 @@ public sealed record PartidoForCreation
     public int CantidadParticipantes { get; set; }
     public TimeSpan Duracion { get; set; } = TimeSpan.FromMinutes(90);
     public Deporte.Deporte Deporte { get; set; }
-    public NivelHabilidad NivelMinimo { get; set; } = NivelHabilidad.Basico;
+    public NivelHabilidad NivelMinimo { get; set; } = NivelHabilidad.Principiante;
     public NivelHabilidad NivelMaximo { get; set; } = NivelHabilidad.Experto;
     public int PartidosMinimosJugados { get; set; } = 0;
     public IEstrategiaEmparejamiento EstrategiaEmparejamiento { get; set; }
