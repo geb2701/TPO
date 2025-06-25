@@ -1,5 +1,4 @@
 ﻿using SharedKernel.Domain.Entity;
-using System.ComponentModel.DataAnnotations.Schema;
 using Tpo.Domain.Jugador;
 using Tpo.Domain.Jugador.Models;
 using Tpo.Domain.Partido.Models;
@@ -9,8 +8,7 @@ namespace Tpo.Domain.Partido
     public class Partido : BaseEntity<int>, IJugadorObserver
     {
         protected Partido() { }
-        public string EstadoNombre { get; private set; }
-        [NotMapped] public IPartidoState Estado { get; private set; } = new NecesitamosJugadoresState();
+        public IPartidoState Estado { get; private set; } = new NecesitamosJugadoresState();
         public DateTime FechaHora { get; private set; }
         public TimeSpan Duracion { get; private set; } = TimeSpan.FromMinutes(90);
         public string Ubicacion { get; private set; }
@@ -26,7 +24,6 @@ namespace Tpo.Domain.Partido
         {
             return new Partido
             {
-                EstadoNombre = new NecesitamosJugadoresState().Nombre,
                 FechaHora = partidoForCreation.FechaHora,
                 Ubicacion = partidoForCreation.Ubicacion,
                 CantidadParticipantes = partidoForCreation.CantidadParticipantes,
@@ -48,7 +45,6 @@ namespace Tpo.Domain.Partido
         public void CambiarEstado(IPartidoState nuevoEstado, bool notificar = true)
         {
             Estado = nuevoEstado;
-            EstadoNombre = nuevoEstado.Nombre;
             if (notificar)
                 NotificarObservers();
         }

@@ -26,7 +26,8 @@ namespace Tpo.Databases.EntityConfigurations
             );
 
             builder
-                .Property(p => p.EstadoNombre)
+                .Property(p => p.Estado)
+                .HasConversion(estadoConverter)
                 .HasColumnName("Estado")
                 .IsRequired();
 

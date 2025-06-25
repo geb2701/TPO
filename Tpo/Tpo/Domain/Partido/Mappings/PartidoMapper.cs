@@ -38,8 +38,6 @@ public static partial class PartidoMapper
     {
         return ToPartidoForCreationPartial(dto, deporte, new EmparejamientoPorHistorial());
     }
-    [MapProperty(nameof(Partido.EstadoNombre), nameof(PartidoDto.Estado))]
-    [MapperIgnoreSource(nameof(Partido.Estado))]
     public static partial PartidoDto ToPartidoDto(this Partido entity);
 
     public static partial IQueryable<PartidoDto> ToPartidoDtoQueryable(this IQueryable<Partido> entity);
@@ -65,6 +63,9 @@ public static partial class PartidoMapper
         DeporteId = x.Id,
         Nombre = x.Nombre
     };
+
+    [UserMapping]
+    private static string ToString(IEstrategiaEmparejamiento estrategiaEmparejamiento) => estrategiaEmparejamiento.Nombre;
 
     [UserMapping]
     private static string ToString(IPartidoState estado) => estado.Nombre;
