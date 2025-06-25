@@ -86,7 +86,6 @@
         }
     }
 
-    // Cancelado
     public class CanceladoState : IPartidoState
     {
         public string Nombre => "Cancelado";

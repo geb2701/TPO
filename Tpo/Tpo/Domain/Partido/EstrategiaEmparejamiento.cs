@@ -53,7 +53,7 @@ namespace Tpo.Domain.Partido
             var candidatosPosibles = candidatos
                 .Where(j =>
                 {
-                    var cantidadPatidos = j.Partidos.Where(x => x.Estado is FinalizadoState);
+                    var cantidadPatidos = j.Participante.Where(x => x.Partido.Estado is FinalizadoState);
                     return cantidadPatidos.Count() >= partido.PartidosMinimosJugados;
                 }).ToList();
 
