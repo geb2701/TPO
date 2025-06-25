@@ -13,6 +13,6 @@ namespace SharedKernel.Domain.Entity
         /// Obtiene la clave primaria de la entidad.
         /// </summary>
         [Key]
-        public TKey Id { get; private set; } = typeof(TKey) == typeof(Guid) ? (TKey)(object)Guid.NewGuid() : default!;
+        public virtual TKey Id { get; protected set; } = typeof(TKey) == typeof(Guid) ? (TKey)(object)Guid.NewGuid() : default!;
     }
 }

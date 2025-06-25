@@ -10,5 +10,5 @@ public sealed record PartidoDto
     public bool IsDeleted { get; set; }
 
     // Atributos de la clase partido
-    public string Nombre { get; set; }
+    //public string Nombre { get; set; }
 }

@@ -39,7 +39,7 @@ public class UpdateUsuario
             validator.ValidateAndThrowValidationException(request);
 
             var entity =
-                await repository.GetById(request.Id, cancellationToken);
+                await repository.GetById(request.Id, true, cancellationToken);
             var model = request.Dto.ToUsuarioForUpdate();
 
             entity.Update(model);

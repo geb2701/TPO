@@ -7,6 +7,6 @@ public interface IPartidoRepository : IRepositoryIncludableQueryable<Partido, in
 {
 }
 
-public sealed class ServicesRepository(TpoDbContext dbContext) : GenericRepository<Partido, int>(dbContext), IPartidoRepository
+public sealed class PartidoRepository(TpoDbContext dbContext) : GenericRepository<Partido, int>(dbContext), IPartidoRepository
 {
 }

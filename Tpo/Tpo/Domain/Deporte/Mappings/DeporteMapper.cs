@@ -1,6 +1,7 @@
 using Riok.Mapperly.Abstractions;
 using Tpo.Domain.Deporte.Dtos;
 using Tpo.Domain.Deporte.Models;
+using Tpo.Domain.Partido.Dtos;
 
 namespace Tpo.Domain.Deporte.Mappings;
 
@@ -14,6 +15,7 @@ public static partial class DeporteMapper
     public static partial DeporteForUpdate ToDeporteForUpdate(
         this DeporteForUpdateDto dto);
 
+    [MapperIgnoreSource(nameof(Deporte.UsuariosDeportes))]
     public static partial DeporteDto ToDeporteDto(this Deporte entity);
 
     public static partial IQueryable<DeporteDto>

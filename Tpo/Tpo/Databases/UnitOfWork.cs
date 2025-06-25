@@ -2,17 +2,15 @@ using SharedKernel.Databases;
 
 namespace Tpo.Databases;
 
-public sealed class UnitOfWork : IUnitOfWork
+public sealed class UnitOfWork(TpoDbContext dbContext) : IUnitOfWork
 {
-    private readonly TpoDbContext _dbContext;
-
-    public UnitOfWork(TpoDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
-
     public async Task<int> CommitChanges(CancellationToken cancellationToken = default)
     {
-        return await _dbContext.SaveChangesAsync(cancellationToken);
+        return await dbContext.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task<int> SystemCommitChanges(CancellationToken cancellationToken = default)
+    {
+        return await dbContext.SaveChangesSystemAsync(cancellationToken);
     }
 }

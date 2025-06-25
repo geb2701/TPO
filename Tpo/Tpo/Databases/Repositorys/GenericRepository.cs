@@ -21,8 +21,8 @@ public interface IRepositoryIncludableQueryable<TEntity, TKey> : IGenericReposit
     /// <param name="cancellationToken">Token de cancelación.</param>
     /// <param name="withTracking">Indica si se debe realizar seguimiento de cambios.</param>
     /// <param name="includes">Propiedades a incluir.</param>
-    Task<TEntity> GetByIdOrDefault(TKey id, CancellationToken cancellationToken = default,
-        bool withTracking = true,
+    Task<TEntity> GetByIdOrDefault(TKey id,
+        bool withTracking = true, CancellationToken cancellationToken = default,
         params Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>[] includes);
 
     /// <summary>
@@ -32,19 +32,19 @@ public interface IRepositoryIncludableQueryable<TEntity, TKey> : IGenericReposit
     /// <param name="cancellationToken">Token de cancelación.</param>
     /// <param name="withTracking">Indica si se debe realizar seguimiento de cambios.</param>
     /// <param name="includes">Propiedades a incluir.</param>
-    Task<TEntity> GetById(TKey id, CancellationToken cancellationToken = default,
-        bool withTracking = true, params Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>[] includes);
+    Task<TEntity> GetById(TKey id, bool withTracking = true, CancellationToken cancellationToken = default, params Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>[] includes);
 
     IQueryable<TEntity> Query(
-        Expression<Func<TEntity, bool>> filter = null, CancellationToken cancellationToken = default,
-        bool withTracking = true,
+        Expression<Func<TEntity, bool>> filter = null,
+        bool withTracking = true, CancellationToken cancellationToken = default,
         params Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>[] includes);
 }
 public abstract class GenericRepository<TEntity, TKey>(TpoDbContext dbContext) : BaseRepository<TEntity>(dbContext), IRepositoryIncludableQueryable<TEntity, TKey>
     where TEntity : Entity<TKey>
 {
+    private readonly TpoDbContext dbContext = dbContext;
     public virtual async Task<TEntity> GetByIdOrDefault(TKey id,
-        CancellationToken cancellationToken = default, bool withTracking = true)
+       bool withTracking = true, CancellationToken cancellationToken = default)
     {
         return withTracking
             ? await dbContext.Set<TEntity>()
@@ -53,8 +53,8 @@ public abstract class GenericRepository<TEntity, TKey>(TpoDbContext dbContext) :
                 .AsNoTracking()
                 .FirstOrDefaultAsync(e => e.Id.Equals(id), cancellationToken);
     }
-    public virtual async Task<TEntity> GetByIdOrDefault(TKey id, CancellationToken cancellationToken = default,
-        bool withTracking = true,
+    public virtual async Task<TEntity> GetByIdOrDefault(TKey id,
+        bool withTracking = true, CancellationToken cancellationToken = default,
         params Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>[] includes)
     {
         var query = withTracking
@@ -67,8 +67,8 @@ public abstract class GenericRepository<TEntity, TKey>(TpoDbContext dbContext) :
 
         return await query.FirstOrDefaultAsync(e => e.Id.Equals(id), cancellationToken);
     }
-    public virtual async Task<TEntity> GetByIdOrDefault(TKey id, CancellationToken cancellationToken = default,
-        bool withTracking = true, params Expression<Func<TEntity, object>>[] includes)
+    public virtual async Task<TEntity> GetByIdOrDefault(TKey id,
+        bool withTracking = true, CancellationToken cancellationToken = default, params Expression<Func<TEntity, object>>[] includes)
     {
         var query = withTracking
             ? dbContext.Set<TEntity>()
@@ -80,35 +80,27 @@ public abstract class GenericRepository<TEntity, TKey>(TpoDbContext dbContext) :
 
         return await query.FirstOrDefaultAsync(e => e.Id.Equals(id), cancellationToken);
     }
-    public virtual async Task<TEntity> GetById(TKey id,
-        CancellationToken cancellationToken = default, bool withTracking = true)
+    public virtual async Task<TEntity> GetById(TKey id, bool withTracking = true,
+        CancellationToken cancellationToken = default)
     {
-        var entity = await GetByIdOrDefault(id, cancellationToken, withTracking);
+        var entity = await GetByIdOrDefault(id, withTracking, cancellationToken);
 
-        if (entity == null)
-            throw new NotFoundException($"{typeof(TEntity).Name} con ID '{id}' no fue encontrado.");
-
-        return entity;
+        return entity ?? throw new NotFoundException($"{typeof(TEntity).Name} con ID '{id}' no fue encontrado.");
     }
-    public virtual async Task<TEntity> GetById(TKey id, CancellationToken cancellationToken = default, bool withTracking = true,
+    public virtual async Task<TEntity> GetById(TKey id, bool withTracking = true, CancellationToken cancellationToken = default,
         params Expression<Func<TEntity, object>>[] includes)
     {
-        var entity = await GetByIdOrDefault(id, cancellationToken, withTracking, includes);
+        var entity = await GetByIdOrDefault(id, withTracking, cancellationToken, includes);
 
-        if (entity == null)
-            throw new NotFoundException($"{typeof(TEntity).Name} con ID '{id}' no fue encontrado.");
-
-        return entity;
+        return entity ?? throw new NotFoundException($"{typeof(TEntity).Name} con ID '{id}' no fue encontrado.");
     }
-    public virtual async Task<TEntity> GetById(TKey id, CancellationToken cancellationToken = default,
-        bool withTracking = true, params Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>[] includes)
+    public virtual async Task<TEntity> GetById(TKey id,
+        bool withTracking = true, CancellationToken cancellationToken = default,
+        params Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>[] includes)
     {
-        var entity = await GetByIdOrDefault(id, cancellationToken, withTracking, includes);
+        var entity = await GetByIdOrDefault(id, withTracking, cancellationToken, includes);
 
-        if (entity == null)
-            throw new NotFoundException($"{typeof(TEntity).Name} con ID '{id}' no fue encontrado.");
-
-        return entity;
+        return entity ?? throw new NotFoundException($"{typeof(TEntity).Name} con ID '{id}' no fue encontrado.");
     }
 
     public virtual async Task<bool> Exists(TKey id, CancellationToken cancellationToken = default)
@@ -124,12 +116,15 @@ public abstract class GenericRepository<TEntity, TKey>(TpoDbContext dbContext) :
 
     }
 
-    public virtual IQueryable<TEntity> Query(Expression<Func<TEntity, bool>> filter, CancellationToken cancellationToken = default,
-        bool withTracking = true, params Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>[] includes)
+    public virtual IQueryable<TEntity> Query(Expression<Func<TEntity, bool>> filter, bool withTracking = true,
+        CancellationToken cancellationToken = default, params Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>[] includes)
     {
         var query = withTracking
             ? dbContext.Set<TEntity>()
             : dbContext.Set<TEntity>().AsNoTracking();
+
+        if (filter != null)
+            query = query.Where(filter);
 
         if (includes != null)
             foreach (var includeExpression in includes)

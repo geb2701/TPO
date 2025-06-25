@@ -9,11 +9,7 @@ public static class ServiceRegistration
     public static void AddInfrastructure(this IServiceCollection services, IWebHostEnvironment env,
         IConfiguration configuration)
     {
-        /* SETUP DATABASE */
         services.SetupDatabase(env, configuration);
-
-        /* SETUP HANGFIRE */
-        //services.SetupHangfire(env);
     }
 }
 

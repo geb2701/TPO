@@ -27,7 +27,7 @@ public class UpdateUsuarioDeporte
         {
             validator.ValidateAndThrowValidationException(request);
 
-            var entity = await repository.GetById(request.Id, cancellationToken, includes: [x => x.Deporte, x => x.Usuario]);
+            var entity = await repository.GetById(request.Id, true, cancellationToken, [x => x.Deporte, x => x.Usuario]);
 
             var model = request.Dto.ToUsuarioDeporteForUpdate();
 

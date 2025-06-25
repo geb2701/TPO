@@ -49,7 +49,7 @@ namespace Tpo.Databases
             };
 
             context.Usuario.AddRange(usuarios);
-            await context.SaveChangesSeedAsync();
+            await context.SaveChangesSystemAsync();
 
             var deportes = new List<Deporte>
             {
@@ -60,7 +60,7 @@ namespace Tpo.Databases
 
             context.Deporte.AddRange(deportes);
 
-            await context.SaveChangesSeedAsync();
+            await context.SaveChangesSystemAsync();
         }
     }
 }

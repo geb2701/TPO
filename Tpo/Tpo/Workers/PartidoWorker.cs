@@ -5,18 +5,24 @@ using Tpo.Domain.Partido.Services;
 
 namespace Tpo.Workers
 {
-    public class PartidoWorker(IPartidoRepository partidoRepository, IUnitOfWork unitOfWork) : BackgroundService
+    public class PartidoWorker(IServiceProvider serviceProvider) : BackgroundService
     {
         private readonly TimeSpan _intervalo = TimeSpan.FromMinutes(1);
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            using var scope = serviceProvider.CreateScope();
+            var partidoRepository = scope.ServiceProvider.GetRequiredService<IPartidoRepository>();
+            var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+
             while (!stoppingToken.IsCancellationRequested)
             {
                 var ahora = DateTime.Now;
                 var partidosConfimados = partidoRepository
-                    .Query(x => x.Estado is ConfirmadoState && x.FechaHora <= ahora, stoppingToken, true,
+                    .Query(x => x.FechaHora <= ahora, true, stoppingToken,
                         q => q.Include(p => p.Jugadores).ThenInclude(j => j.Usuario))
+                    .AsEnumerable()
+                    .Where(x => x.Estado is ConfirmadoState)
                     .ToList();
 
                 foreach (var partido in partidosConfimados)
@@ -25,8 +31,10 @@ namespace Tpo.Workers
                 }
 
                 var partidosCompletados = partidoRepository
-                    .Query(x => x.Estado is ConfirmadoState && x.FechaHora + x.Duracion <= ahora, stoppingToken, true,
+                    .Query(x => x.FechaHora + x.Duracion <= ahora, true, stoppingToken,
                         q => q.Include(p => p.Jugadores).ThenInclude(j => j.Usuario))
+                    .AsEnumerable()
+                    .Where(x => x.Estado is ConfirmadoState)
                     .ToList();
 
                 foreach (var partido in partidosCompletados)
@@ -34,7 +42,19 @@ namespace Tpo.Workers
                     partido.AvanzarEstado();
                 }
 
-                await unitOfWork.CommitChanges(stoppingToken);
+                var partidosACancelar = partidoRepository
+                    .Query(x => x.FechaHora + x.Duracion >= ahora, true, stoppingToken,
+                        q => q.Include(p => p.Jugadores).ThenInclude(j => j.Usuario))
+                    .AsEnumerable()
+                    .Where(x => x.Estado is ConfirmadoState || x.Estado is PartidoArmadoState || x.Estado is NecesitamosJugadoresState)
+                    .ToList();
+
+                foreach (var partido in partidosACancelar)
+                {
+                    partido.Cancelar();
+                }
+
+                await unitOfWork.SystemCommitChanges(stoppingToken);
 
                 await Task.Delay(_intervalo, stoppingToken);
             }

@@ -15,9 +15,9 @@ public static class GetUsuario
         {
             var entity = await repository.GetById(
                 request.Id,
-                cancellationToken,
                 true,
-                includes: q => q.Include(u => u.Habilidades).ThenInclude(h => h.Deporte)
+                cancellationToken,
+                q => q.Include(u => u.Habilidades).ThenInclude(h => h.Deporte)
             );
 
             return entity?.ToUsuarioDto();

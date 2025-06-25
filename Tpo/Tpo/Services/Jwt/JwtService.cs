@@ -4,12 +4,10 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using System.Security.Claims;
 using System.Text;
-using System.Text.Json;
 using Tpo.Domain.Usuario;
 using Tpo.Domain.Usuario.Services;
 
 namespace Tpo.Services.Jwt;
-
 
 /// <summary>
 /// Interfaz para utilidades relacionadas con JWT, como generación, validación y carga de tokens.
@@ -64,17 +62,15 @@ internal class JwtUtils(IUsuarioRepository userRepository) : IJwtUtils
     public string GenerateJwtToken(Usuario user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var claims = new List<Claim>();
-
-        PropertyInfo[] properties = typeof(Usuario).GetProperties(BindingFlags.Public | BindingFlags.Instance);
-        foreach (PropertyInfo property in properties)
+        var claims = new List<Claim>
         {
-            if (property.CanRead && property.CanWrite && property.Name != nameof(Usuario.Habilidades))
-            {
-                var value = property.GetValue(user);
-                claims.Add(new Claim(property.Name, value != null ? JsonSerializer.Serialize(value)! : ""));
-            }
-        }
+            new(nameof(Usuario.UsuarioNombre), user.UsuarioNombre),
+            new(nameof(Usuario.Id), user.Id.ToString()),
+            new(nameof(Usuario.Nombre), user.Nombre),
+            new(nameof(Usuario.Email), user.Email),
+            new(nameof(Usuario.Contrasena), user.Contrasena),
+            new(nameof(Usuario.Ubicacion), user.Ubicacion)
+        };
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
@@ -128,12 +124,10 @@ internal class JwtUtils(IUsuarioRepository userRepository) : IJwtUtils
         try
         {
             var validatedToken = await DecodeToken(token);
-            var username = JsonSerializer.Deserialize<string>(
-                validatedToken?.Claims.First(x => x.Key == nameof(Usuario.UsuarioNombre)).Value?.ToString() ?? ""
-            );
-            var password = JsonSerializer.Deserialize<string>(
-                validatedToken?.Claims.First(x => x.Key == nameof(Usuario.Contrasena)).Value?.ToString() ?? ""
-            );
+            var username =
+                validatedToken?.Claims.First(x => x.Key == nameof(Usuario.UsuarioNombre)).Value?.ToString();
+            var password =
+                validatedToken?.Claims.First(x => x.Key == nameof(Usuario.Contrasena)).Value?.ToString();
             var users = userRepository.Query(x => x.UsuarioNombre == username && x.Contrasena == password);
 
             if (users.Count() != 1)
@@ -154,25 +148,40 @@ internal class JwtUtils(IUsuarioRepository userRepository) : IJwtUtils
     {
         var validatedToken = await DecodeToken(token);
 
-        // Asigna los valores de los claims a las propiedades del usuario
-        PropertyInfo[] properties = typeof(Usuario).GetProperties(BindingFlags.Public | BindingFlags.Instance);
-        foreach (PropertyInfo property in properties)
-        {
+        if (validatedToken == null)
+            return;
 
-            if (property.CanRead && property.CanWrite && property.Name != nameof(Usuario.Habilidades))
-            {
-                var claim = validatedToken?.Claims.FirstOrDefault(x => x.Key == property.Name);
-                if (claim != null)
-                {
-                    var value = claim.Value.Value.ToString();
+        var claims = validatedToken.Claims;
 
-                    if (value != null && !string.IsNullOrWhiteSpace(value))
-                    {
-                        property.SetValue(user, JsonSerializer.Deserialize(value, property.PropertyType));
-                    }
-                }
-            }
-        }
+        var usuarioNombreClaim = claims.FirstOrDefault(x => x.Key == nameof(Usuario.UsuarioNombre));
+        if (usuarioNombreClaim.Value != null)
+            user.GetType().GetProperty(nameof(Usuario.UsuarioNombre), BindingFlags.Public | BindingFlags.Instance)
+                ?.SetValue(user, usuarioNombreClaim.Value.ToString());
+
+        var idClaim = claims.FirstOrDefault(x => x.Key == nameof(Usuario.Id));
+        if (idClaim.Value != null)
+            user.GetType().GetProperty(nameof(Usuario.Id), BindingFlags.Public | BindingFlags.Instance)
+                ?.SetValue(user, int.Parse(idClaim.Value.ToString()));
+
+        var nombreClaim = claims.FirstOrDefault(x => x.Key == nameof(Usuario.Nombre));
+        if (nombreClaim.Value != null)
+            user.GetType().GetProperty(nameof(Usuario.Nombre), BindingFlags.Public | BindingFlags.Instance)
+                ?.SetValue(user, nombreClaim.Value.ToString());
+
+        var emailClaim = claims.FirstOrDefault(x => x.Key == nameof(Usuario.Email));
+        if (emailClaim.Value != null)
+            user.GetType().GetProperty(nameof(Usuario.Email), BindingFlags.Public | BindingFlags.Instance)
+                ?.SetValue(user, emailClaim.Value.ToString());
+
+        var ubicacionClaim = claims.FirstOrDefault(x => x.Key == nameof(Usuario.Ubicacion));
+        if (ubicacionClaim.Value != null)
+            user.GetType().GetProperty(nameof(Usuario.Ubicacion), BindingFlags.Public | BindingFlags.Instance)
+                ?.SetValue(user, ubicacionClaim.Value.ToString());
+
+        var contrasenaClaim = claims.FirstOrDefault(x => x.Key == nameof(Usuario.Contrasena));
+        if (contrasenaClaim.Value != null)
+            user.GetType().GetProperty(nameof(Usuario.Contrasena), BindingFlags.Public | BindingFlags.Instance)
+                ?.SetValue(user, contrasenaClaim.Value.ToString());
     }
 
     /// <inheritdoc/>

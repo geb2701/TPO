@@ -28,7 +28,7 @@ public class UpdateDeporte
         {
             validator.ValidateAndThrowValidationException(request);
 
-            var entity = await repository.GetById(request.Id, cancellationToken);
+            var entity = await repository.GetById(request.Id, true, cancellationToken);
             var model = request.Dto.ToDeporteForUpdate();
 
             entity.Update(model);

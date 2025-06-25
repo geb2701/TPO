@@ -6,8 +6,7 @@ namespace Tpo.Domain.Usuario
     public class Usuario : BaseEntity<int>
     {
         protected Usuario() { }
-
-        public new int Id { get; internal set; } = default; //Ignorar
+        public override int Id { get; protected set; }
         public string UsuarioNombre { get; private set; }
         public string Nombre { get; private set; }
         public string Contrasena { get; private set; }

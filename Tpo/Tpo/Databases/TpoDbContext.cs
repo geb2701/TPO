@@ -36,14 +36,14 @@ public sealed class TpoDbContext(DbContextOptions<TpoDbContext> options,
         return result;
     }
 
-    public async Task<int> SaveChangesSeedAsync(CancellationToken cancellationToken = new())
+    public async Task<int> SaveChangesSystemAsync(CancellationToken cancellationToken = new())
     {
-        UpdateAuditFieldsSeed();
+        UpdateAuditFieldsSystem();
         var result = await base.SaveChangesAsync(cancellationToken);
         return result;
     }
 
-    private void UpdateAuditFieldsSeed()
+    private void UpdateAuditFieldsSystem()
     {
         var now = DateTime.UtcNow;
 

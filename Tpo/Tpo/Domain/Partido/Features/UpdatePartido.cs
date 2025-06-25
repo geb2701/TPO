@@ -40,7 +40,7 @@ public class UpdatePartido
         {
             _validator.ValidateAndThrowValidationException(request);
 
-            var entity = await _repository.GetById(request.Id, cancellationToken);
+            var entity = await _repository.GetById(request.Id, true, cancellationToken);
             var model = request.Dto.ToPartidoForUpdate();
 
             //entity.Update(model);

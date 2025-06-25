@@ -18,7 +18,7 @@
             <typeparam name="TEntity">Tipo de la entidad.</typeparam>
             <typeparam name="TKey">Tipo de la clave primaria de la entidad.</typeparam>
         </member>
-        <member name="M:Tpo.Databases.Repositorys.IRepositoryIncludableQueryable`2.GetByIdOrDefault(`1,System.Threading.CancellationToken,System.Boolean,System.Func{System.Linq.IQueryable{`0},Microsoft.EntityFrameworkCore.Query.IIncludableQueryable{`0,System.Object}}[])">
+        <member name="M:Tpo.Databases.Repositorys.IRepositoryIncludableQueryable`2.GetByIdOrDefault(`1,System.Boolean,System.Threading.CancellationToken,System.Func{System.Linq.IQueryable{`0},Microsoft.EntityFrameworkCore.Query.IIncludableQueryable{`0,System.Object}}[])">
             <summary>
             Obtiene una entidad por su clave primaria o devuelve null si no se encuentra, incluyendo propiedades especificadas.
             </summary>
@@ -27,7 +27,7 @@
             <param name="withTracking">Indica si se debe realizar seguimiento de cambios.</param>
             <param name="includes">Propiedades a incluir.</param>
         </member>
-        <member name="M:Tpo.Databases.Repositorys.IRepositoryIncludableQueryable`2.GetById(`1,System.Threading.CancellationToken,System.Boolean,System.Func{System.Linq.IQueryable{`0},Microsoft.EntityFrameworkCore.Query.IIncludableQueryable{`0,System.Object}}[])">
+        <member name="M:Tpo.Databases.Repositorys.IRepositoryIncludableQueryable`2.GetById(`1,System.Boolean,System.Threading.CancellationToken,System.Func{System.Linq.IQueryable{`0},Microsoft.EntityFrameworkCore.Query.IIncludableQueryable{`0,System.Object}}[])">
             <summary>
             Obtiene una entidad por su clave primaria, incluyendo propiedades especificadas.
             </summary>

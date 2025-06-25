@@ -21,7 +21,7 @@ namespace SharedKernel.Databases
         /// <param name="cancellationToken">Token de cancelación.</param>
         /// <param name="withTracking">Indica si se debe realizar seguimiento de cambios.</param>
 
-        Task<TEntity> GetByIdOrDefault(TKey id, CancellationToken cancellationToken = default, bool withTracking = true);
+        Task<TEntity> GetByIdOrDefault(TKey id, bool withTracking = true, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Obtiene una entidad por su clave primaria o devuelve null si no se encuentra, incluyendo propiedades especificadas.
@@ -30,7 +30,7 @@ namespace SharedKernel.Databases
         /// <param name="cancellationToken">Token de cancelación.</param>
         /// <param name="withTracking">Indica si se debe realizar seguimiento de cambios.</param>
         /// <param name="includes">Propiedades a incluir.</param>
-        Task<TEntity> GetByIdOrDefault(TKey id, CancellationToken cancellationToken = default, bool withTracking = true, params Expression<Func<TEntity, object>>[] includes);
+        Task<TEntity> GetByIdOrDefault(TKey id, bool withTracking = true, CancellationToken cancellationToken = default, params Expression<Func<TEntity, object>>[] includes);
 
         /// <summary>
         /// Obtiene una entidad por su clave primaria.
@@ -38,7 +38,7 @@ namespace SharedKernel.Databases
         /// <param name="id">Clave primaria de la entidad.</param>
         /// <param name="cancellationToken">Token de cancelación.</param>
         /// <param name="withTracking">Indica si se debe realizar seguimiento de cambios.</param>
-        Task<TEntity> GetById(TKey id, CancellationToken cancellationToken = default, bool withTracking = true);
+        Task<TEntity> GetById(TKey id, bool withTracking = true, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Obtiene una entidad por su clave primaria, incluyendo propiedades especificadas.
@@ -47,7 +47,7 @@ namespace SharedKernel.Databases
         /// <param name="cancellationToken">Token de cancelación.</param>
         /// <param name="withTracking">Indica si se debe realizar seguimiento de cambios.</param>
         /// <param name="includes">Propiedades a incluir.</param>
-        Task<TEntity> GetById(TKey id, CancellationToken cancellationToken = default, bool withTracking = true, params Expression<Func<TEntity, object>>[] includes);
+        Task<TEntity> GetById(TKey id, bool withTracking = true, CancellationToken cancellationToken = default, params Expression<Func<TEntity, object>>[] includes);
 
         /// <summary>
         /// Verifica si una entidad existe por su clave primaria.

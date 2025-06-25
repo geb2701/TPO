@@ -20,7 +20,7 @@ namespace Tpo.Controllers.v1
         [HttpPost(Name = "PartidoAdd")]
         public async Task<IActionResult> PartidoAdd([FromBody] PartidoHistorialForCreationDto dto)
         {
-            var command = new AddPartido.Command(dto);
+            var command = new AddPartidoHistorial.Command(dto);
             var queryResponse = await _mediator.Send(command);
             return Ok(queryResponse);
         }
