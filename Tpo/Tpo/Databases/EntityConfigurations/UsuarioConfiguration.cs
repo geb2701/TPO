@@ -17,12 +17,12 @@ namespace Tpo.Databases.EntityConfigurations
             builder
                 .HasMany(u => u.Habilidades)
                 .WithOne(ud => ud.Usuario)
-                .HasForeignKey(ud => ud.Id);
+                .HasForeignKey(ud => ud.UsuarioId);
 
             builder
                 .HasMany(u => u.Participante)
                 .WithOne(ud => ud.Usuario)
-                .HasForeignKey(ud => ud.Id);
+                .HasForeignKey(ud => ud.UsuarioId);
         }
     }
 }

@@ -17,12 +17,28 @@ namespace Tpo.Controllers.v1
         private readonly ILogger<PartidoController> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
-        [HttpPost(Name = "PartidoAdd")]
-        public async Task<IActionResult> PartidoAdd([FromBody] PartidoHistorialForCreationDto dto)
+        [HttpPost("Historial", Name = "PartidoAddHistorial")]
+        public async Task<IActionResult> PartidoAddHistorial([FromBody] PartidoHistorialForCreationDto dto)
         {
             var command = new AddPartidoHistorial.Command(dto);
-            var queryResponse = await _mediator.Send(command);
-            return Ok(queryResponse);
+            var response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
+        [HttpPost("Nivel", Name = "PartidoAddNivel")]
+        public async Task<IActionResult> PartidoAddNivel([FromBody] PartidoNivelForCreationDto dto)
+        {
+            var command = new AddPartidoNivel.Command(dto);
+            var response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
+        [HttpPost("Ubicacion", Name = "PartidoAddUbicacion")]
+        public async Task<IActionResult> PartidoAddUbicacion([FromBody] PartidoUbicacionForCreationDto dto)
+        {
+            var command = new AddPartidoUbicacion.Command(dto);
+            var response = await _mediator.Send(command);
+            return Ok(response);
         }
 
 

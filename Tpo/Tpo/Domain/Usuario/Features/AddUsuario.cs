@@ -16,7 +16,7 @@ public class AddUsuario
     {
         public AddUsuarioValidator()
         {
-            RuleFor(x => x.Dto.UsuarioNombre)
+            RuleFor(x => x.Dto.Alias)
                 .NotEmpty().WithMessage("El nombre de usuario es obligatorio.")
                 .Length(3, 30).WithMessage("El nombre de usuario debe tener entre 3 y 30 caracteres.")
                 .Matches("^[^\\s]+$").WithMessage("El nombre de usuario no debe contener espacios.");
@@ -37,6 +37,10 @@ public class AddUsuario
             RuleFor(x => x.Dto.Ubicacion)
                 .NotEmpty().WithMessage("La ubicación es obligatoria.")
                 .MaximumLength(100).WithMessage("La ubicación no debe superar los 100 caracteres.");
+
+            RuleFor(x => x.Dto.TipoNotificacion)
+                .IsInEnum()
+                .WithMessage("El tipo de notificación seleccionado no es válido.");
         }
     }
 
@@ -50,7 +54,7 @@ public class AddUsuario
             var model = request.Dto.ToUsuarioForCreation();
             var entity = Usuario.Create(model);
 
-            if (repository.Query().Any(x => x.UsuarioNombre == entity.UsuarioNombre || x.Email == entity.Email))
+            if (repository.Query().Any(x => x.Alias == entity.Alias || x.Email == entity.Email))
                 throw new ApplicationException("El usuario ya existe.");
 
             await repository.Add(entity, cancellationToken);

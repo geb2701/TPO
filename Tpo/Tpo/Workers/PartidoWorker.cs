@@ -34,7 +34,7 @@ namespace Tpo.Workers
                     .Query(x => x.FechaHora + x.Duracion <= ahora, true, stoppingToken,
                         q => q.Include(p => p.Jugadores).ThenInclude(j => j.Usuario))
                     .AsEnumerable()
-                    .Where(x => x.Estado is ConfirmadoState)
+                    .Where(x => x.Estado is EnJuegoState)
                     .ToList();
 
                 foreach (var partido in partidosCompletados)

@@ -5,6 +5,8 @@ namespace Tpo.Domain.UsuarioDeporte
 {
     public class UsuarioDeporte : BaseEntity<int>
     {
+        public int UsuarioId { get; set; }
+        public int DeporteId { get; set; }
         public Usuario.Usuario Usuario { get; set; }
         public Deporte.Deporte Deporte { get; set; }
         public NivelHabilidad Nivel { get; set; }
@@ -16,6 +18,8 @@ namespace Tpo.Domain.UsuarioDeporte
         {
             return new UsuarioDeporte
             {
+                UsuarioId = usuarioDeporteForCreation.Usuario.Id,
+                DeporteId = usuarioDeporteForCreation.Deporte.Id,
                 Usuario = usuarioDeporteForCreation.Usuario,
                 Deporte = usuarioDeporteForCreation.Deporte,
                 Nivel = usuarioDeporteForCreation.Nivel,

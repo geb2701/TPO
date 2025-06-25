@@ -17,7 +17,7 @@ namespace Tpo.Databases.EntityConfigurations
             builder
                 .HasMany(u => u.UsuariosDeportes)
                 .WithOne(ud => ud.Deporte)
-                .HasForeignKey(ud => ud.Id);
+                .HasForeignKey(ud => ud.DeporteId);
         }
     }
 }

@@ -8,15 +8,14 @@ namespace Tpo.Domain.UsuarioDeporte.Mappings
     [UseStaticMapper(typeof(UsuarioDeporteMapper))]
     public static partial class UsuarioDeporteMapper
     {
+        [MapperIgnoreSource(nameof(UsuarioDeporteForCreationDto.DeporteId))]
         public static partial UsuarioDeporteForCreation ToUsuarioDeporteForCreation(
             this UsuarioDeporteForCreationDto dto, Usuario.Usuario usuario, Deporte.Deporte deporte);
 
         public static partial UsuarioDeporteForUpdate ToUsuarioDeporteForUpdate(
             this UsuarioDeporteForUpdateDto dto);
 
-        [MapProperty([nameof(UsuarioDeporte.Usuario), nameof(Usuario.Usuario.Id)], nameof(UsuarioDeporteDto.UsuarioId))]
-        [MapProperty([nameof(UsuarioDeporte.Usuario), nameof(Usuario.Usuario.UsuarioNombre)], nameof(UsuarioDeporteDto.UsuarioNombre))]
-        [MapProperty([nameof(UsuarioDeporte.Deporte), nameof(Deporte.Deporte.Id)], nameof(UsuarioDeporteDto.DeporteId))]
+        [MapProperty([nameof(UsuarioDeporte.Usuario), nameof(Usuario.Usuario.Alias)], nameof(UsuarioDeporteDto.Alias))]
         [MapProperty([nameof(UsuarioDeporte.Deporte), nameof(Deporte.Deporte.Nombre)], nameof(UsuarioDeporteDto.DeporteNombre))]
         public static partial UsuarioDeporteDto ToUsuarioDeporteDto(this UsuarioDeporte entity);
 

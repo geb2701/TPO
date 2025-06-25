@@ -7,7 +7,7 @@ namespace Tpo.Domain.Usuario
     {
         protected Usuario() { }
         public override int Id { get; protected set; }
-        public string UsuarioNombre { get; private set; }
+        public string Alias { get; private set; }
         public string Nombre { get; private set; }
         public string Contrasena { get; private set; }
         public string Email { get; private set; }
@@ -21,7 +21,7 @@ namespace Tpo.Domain.Usuario
             var newExample = new Usuario
             {
                 TipoNotificacion = userForCreation.TipoNotificacion,
-                UsuarioNombre = userForCreation.UsuarioNombre,
+                Alias = userForCreation.Alias,
                 Nombre = userForCreation.Nombre,
                 Contrasena = userForCreation.Contrasena,
                 Email = userForCreation.Email,
@@ -38,6 +38,20 @@ namespace Tpo.Domain.Usuario
             Ubicacion = model.Ubicacion;
             TipoNotificacion = model.TipoNotificacion;
             return this;
+        }
+
+        public bool TienePartidoEnHorario(DateTime fechaInicio, TimeSpan duracion)
+        {
+            var fechaFin = fechaInicio + duracion;
+            return Participante?.Any(j =>
+            {
+                var partido = j.Partido;
+                if (partido == null)
+                    return false;
+                var otroInicio = partido.FechaHora;
+                var otroFin = partido.FechaHora + partido.Duracion;
+                return fechaInicio < otroFin && fechaFin > otroInicio;
+            }) ?? false;
         }
     }
 }

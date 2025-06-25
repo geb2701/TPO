@@ -4,7 +4,10 @@ using SharedKernel.Domain.Entity;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq.Expressions;
 using Tpo.Domain.Deporte;
+using Tpo.Domain.Jugador;
+using Tpo.Domain.Partido;
 using Tpo.Domain.Usuario;
+using Tpo.Domain.UsuarioDeporte;
 using Tpo.Services;
 
 namespace Tpo.Databases;
@@ -14,6 +17,9 @@ public sealed class TpoDbContext(DbContextOptions<TpoDbContext> options,
 {
     public DbSet<Usuario> Usuario { get; set; }
     public DbSet<Deporte> Deporte { get; set; }
+    public DbSet<UsuarioDeporte> UsuarioDeporte { get; set; }
+    public DbSet<Partido> Partido { get; set; }
+    public DbSet<Jugador> Jugador { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -53,7 +59,7 @@ public sealed class TpoDbContext(DbContextOptions<TpoDbContext> options,
                 case EntityState.Added:
                     if (entry.Entity is Usuario userCreated)
                     {
-                        entry.Entity.UpdateCreationProperties(now, userCreated.UsuarioNombre);
+                        entry.Entity.UpdateCreationProperties(now, userCreated.Alias);
                     }
                     else
                     {
@@ -77,14 +83,14 @@ public sealed class TpoDbContext(DbContextOptions<TpoDbContext> options,
     private void UpdateAuditFields()
     {
         var now = DateTime.UtcNow;
-        var nombre = currentUsuarioService.GetUsuarioNombre();
+        var nombre = currentUsuarioService.GetAlias();
         foreach (var entry in ChangeTracker.Entries<IBaseEntity>())
             switch (entry.State)
             {
                 case EntityState.Added:
                     if (entry.Entity is Usuario userCreated)
                     {
-                        entry.Entity.UpdateCreationProperties(now, userCreated.UsuarioNombre);
+                        entry.Entity.UpdateCreationProperties(now, userCreated.Alias);
                     }
                     else
                     {

@@ -6,7 +6,7 @@ namespace Tpo.Services;
 public interface ICurrentUsuarioService : IScopedService
 {
     int GetUsuarioId();
-    string GetUsuarioNombre();
+    string GetAlias();
 }
 
 public class CurrentUsuarioService(IHttpContextAccessor httpContextAccessor) : ICurrentUsuarioService
@@ -25,14 +25,14 @@ public class CurrentUsuarioService(IHttpContextAccessor httpContextAccessor) : I
             throw new Exception(ex.Message);
         }
     }
-    public string GetUsuarioNombre()
+    public string GetAlias()
     {
         try
         {
             httpContextAccessor!.HttpContext!.Items.TryGetValue("Usuario", out var _user);
             var user = _user as Usuario;
 
-            return user.UsuarioNombre;
+            return user.Alias;
         }
         catch (Exception)
         {

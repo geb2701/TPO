@@ -11,7 +11,7 @@ public sealed record UsuarioDeporteDto
 
     // Atributos de la clase UsuarioDeporte
     public int UsuarioId { get; set; }
-    public string UsuarioNombre { get; set; }
+    public string Alias { get; set; }
     public int DeporteId { get; set; }
     public string DeporteNombre { get; set; }
     public EnumResponse Nivel { get; set; }

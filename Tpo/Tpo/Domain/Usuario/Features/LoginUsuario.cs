@@ -30,7 +30,7 @@ public class LoginUsuario
         {
             validator.ValidateAndThrowValidationException(request);
 
-            var user = repository.Query(x => x.UsuarioNombre == request.Dto.Name && x.Contrasena == request.Dto.Password).FirstOrDefault();
+            var user = repository.Query(x => x.Alias == request.Dto.Name && x.Contrasena == request.Dto.Password).FirstOrDefault();
 
             return Task.FromResult(user is null
                 ? throw new NotFoundException("Usuario no encontrado o contraseña incorrecta.")

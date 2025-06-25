@@ -64,7 +64,7 @@ internal class JwtUtils(IUsuarioRepository userRepository) : IJwtUtils
         var tokenHandler = new JwtSecurityTokenHandler();
         var claims = new List<Claim>
         {
-            new(nameof(Usuario.UsuarioNombre), user.UsuarioNombre),
+            new(nameof(Usuario.Alias), user.Alias),
             new(nameof(Usuario.Id), user.Id.ToString()),
             new(nameof(Usuario.Nombre), user.Nombre),
             new(nameof(Usuario.Email), user.Email),
@@ -97,17 +97,17 @@ internal class JwtUtils(IUsuarioRepository userRepository) : IJwtUtils
         try
         {
             var validatedToken = await DecodeToken(token);
-            var username = validatedToken?.Claims.First(x => x.Key == nameof(Usuario.UsuarioNombre)).Value.ToString();
+            var username = validatedToken?.Claims.First(x => x.Key == nameof(Usuario.Alias)).Value.ToString();
             var password = validatedToken?.Claims.First(x => x.Key == nameof(Usuario.Contrasena)).Value.ToString();
 
-            var users = userRepository.Query(x => x.UsuarioNombre == username && x.Contrasena == password);
+            var users = userRepository.Query(x => x.Alias == username && x.Contrasena == password);
 
             if (users.Count() != 1)
             {
                 return null;
             }
 
-            return users.FirstOrDefault().UsuarioNombre;
+            return users.FirstOrDefault().Alias;
         }
         catch
         {
@@ -125,10 +125,10 @@ internal class JwtUtils(IUsuarioRepository userRepository) : IJwtUtils
         {
             var validatedToken = await DecodeToken(token);
             var username =
-                validatedToken?.Claims.First(x => x.Key == nameof(Usuario.UsuarioNombre)).Value?.ToString();
+                validatedToken?.Claims.First(x => x.Key == nameof(Usuario.Alias)).Value?.ToString();
             var password =
                 validatedToken?.Claims.First(x => x.Key == nameof(Usuario.Contrasena)).Value?.ToString();
-            var users = userRepository.Query(x => x.UsuarioNombre == username && x.Contrasena == password);
+            var users = userRepository.Query(x => x.Alias == username && x.Contrasena == password);
 
             if (users.Count() != 1)
             {
@@ -153,9 +153,9 @@ internal class JwtUtils(IUsuarioRepository userRepository) : IJwtUtils
 
         var claims = validatedToken.Claims;
 
-        var usuarioNombreClaim = claims.FirstOrDefault(x => x.Key == nameof(Usuario.UsuarioNombre));
+        var usuarioNombreClaim = claims.FirstOrDefault(x => x.Key == nameof(Usuario.Alias));
         if (usuarioNombreClaim.Value != null)
-            user.GetType().GetProperty(nameof(Usuario.UsuarioNombre), BindingFlags.Public | BindingFlags.Instance)
+            user.GetType().GetProperty(nameof(Usuario.Alias), BindingFlags.Public | BindingFlags.Instance)
                 ?.SetValue(user, usuarioNombreClaim.Value.ToString());
 
         var idClaim = claims.FirstOrDefault(x => x.Key == nameof(Usuario.Id));

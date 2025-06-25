@@ -28,6 +28,10 @@ public class UpdateUsuario
             RuleFor(x => x.Dto.Ubicacion)
                 .NotEmpty().WithMessage("La ubicación es obligatoria.")
                 .MaximumLength(100).WithMessage("La ubicación no debe superar los 100 caracteres.");
+
+            RuleFor(x => x.Dto.TipoNotificacion)
+                .IsInEnum()
+                .WithMessage("El tipo de notificación seleccionado no es válido.");
         }
     }
 
