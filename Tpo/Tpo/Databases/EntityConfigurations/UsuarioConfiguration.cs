@@ -18,6 +18,11 @@ namespace Tpo.Databases.EntityConfigurations
                 .HasMany(u => u.Habilidades)
                 .WithOne(ud => ud.Usuario)
                 .HasForeignKey(ud => ud.Id);
+
+            builder
+                .HasMany(u => u.Participante)
+                .WithOne(ud => ud.Usuario)
+                .HasForeignKey(ud => ud.Id);
         }
     }
 }

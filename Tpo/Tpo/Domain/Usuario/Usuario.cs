@@ -13,7 +13,7 @@ namespace Tpo.Domain.Usuario
         public string Email { get; private set; }
         public string Ubicacion { get; private set; }
         public List<UsuarioDeporte.UsuarioDeporte> Habilidades { get; private set; }
-        public List<Partido.Partido> Partidos { get; private set; }
+        public List<Jugador.Jugador> Participante { get; private set; }
         public TipoNotificacion TipoNotificacion { get; private set; }
 
         public static Usuario Create(UsuarioForCreation userForCreation)

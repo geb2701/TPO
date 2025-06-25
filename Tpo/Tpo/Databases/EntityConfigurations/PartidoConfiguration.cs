@@ -36,6 +36,11 @@ namespace Tpo.Databases.EntityConfigurations
                 .HasConversion(estrategiaConverter)
                 .HasColumnName("EstrategiaEmparejamiento")
                 .IsRequired();
+
+            builder
+                .HasMany(u => u.Jugadores)
+                .WithOne(ud => ud.Partido)
+                .HasForeignKey(ud => ud.Id);
         }
 
         private static class EstrategiaEmparejamientoParser
