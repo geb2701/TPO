@@ -17,8 +17,8 @@ namespace Tpo.Controllers.v1
     {
         private readonly IMediator _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
 
-        [HttpPost("{idPartido}/Usuario/{idUsuario}", Name = "PartidoAddNivel")]
-        public async Task<IActionResult> PartidoAddNivel([FromRoute] int idPartido, [FromRoute] int idUsuario)
+        [HttpPost("{idPartido}/Usuario/{idUsuario}", Name = "AddUserToPartido")]
+        public async Task<IActionResult> AddUserToPartido([FromRoute] int idPartido, [FromRoute] int idUsuario)
         {
             var command = new AddUserToPartido.Command(idPartido, idUsuario);
             var response = await _mediator.Send(command);
@@ -65,21 +65,21 @@ namespace Tpo.Controllers.v1
             return Ok(queryResponse);
         }
 
-        [HttpPost("Confirmar/{partidoId}")]
+        [HttpPost("Confirmar/{partidoId}", Name = "ConfirmarPropio")]
         public async Task<IActionResult> ConfirmarPropio([FromRoute] int partidoId)
         {
             await _mediator.Send(new ConfirmarPropio.Command(partidoId));
             return Ok("Jugador confirmado");
         }
 
-        [HttpPost("ConfirmarOtro/{jugadorId}")]
+        [HttpPost("ConfirmarOtro/{jugadorId}", Name = "ConfirmarOtro"))]
         public async Task<IActionResult> ConfirmarOtro([FromRoute] int jugadorId)
         {
             await _mediator.Send(new ConfirmarJugador.Command(jugadorId));
             return Ok("Jugador confirmado");
         }
 
-        [HttpPost("ConfirmarTodos/{partidoId}")]
+        [HttpPost("ConfirmarTodos/{partidoId}", Name = "ConfirmarTodos")]
         public async Task<IActionResult> ConfirmarTodos([FromRoute] int partidoId)
         {
             await _mediator.Send(new ConfirmarTodosJugadores.Command(partidoId));
