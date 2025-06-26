@@ -25,10 +25,11 @@ namespace Tpo.Domain.Jugador
 
             return jugador;
         }
-
         public void NotificarCambioEstado(string nuevoEstado, Partido.Partido partido)
         {
-            Console.WriteLine($"[Jugador: {Usuario.Nombre}] El partido cambió a: {nuevoEstado}");
+            string mensaje = $"El partido '{partido.Deporte}' cambió a: {nuevoEstado}";
+            var notificador = Notificaciones.NotificadorFactory.CrearNotificador(Usuario.TipoNotificacion);
+            notificador.Notificar(Usuario, mensaje);
         }
 
         public bool Confirmar()
