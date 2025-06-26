@@ -1,8 +1,8 @@
 ﻿using Asp.Versioning;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
+using Tpo.Attributes;
 using Tpo.Domain.Jugador.Features;
 using Tpo.Domain.Partido.Dtos;
 using Tpo.Domain.Partido.Features;
@@ -72,7 +72,7 @@ namespace Tpo.Controllers.v1
             return Ok("Jugador confirmado");
         }
 
-        [HttpPost("ConfirmarOtro/{jugadorId}", Name = "ConfirmarOtro"))]
+        [HttpPost("ConfirmarOtro/{jugadorId}", Name = "ConfirmarOtro")]
         public async Task<IActionResult> ConfirmarOtro([FromRoute] int jugadorId)
         {
             await _mediator.Send(new ConfirmarJugador.Command(jugadorId));
