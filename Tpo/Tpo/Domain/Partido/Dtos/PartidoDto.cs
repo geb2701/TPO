@@ -27,6 +27,7 @@ public sealed record JugadorDto
 {
     public int UsuarioId { get; set; }
     public string Alias { get; set; }
+    public bool Confirmado { get; set; }
 }
 
 public sealed record DeporteSimpleDto

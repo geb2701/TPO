@@ -10,11 +10,11 @@ namespace Tpo.Domain.Partido.Features
 {
     public class MatchMakingPartido
     {
-        public sealed record Query(int Id) : IRequest<MatchMakingDto>;
+        public sealed record Command(int Id) : IRequest<MatchMakingDto>;
 
-        public sealed class Handler(IPartidoRepository repository, IUsuarioRepository usuarioRepository, IUnitOfWork unitOfWork) : IRequestHandler<Query, MatchMakingDto>
+        public sealed class Handler(IPartidoRepository repository, IUsuarioRepository usuarioRepository, IUnitOfWork unitOfWork) : IRequestHandler<Command, MatchMakingDto>
         {
-            public async Task<MatchMakingDto> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<MatchMakingDto> Handle(Command request, CancellationToken cancellationToken)
             {
                 var partido = await repository.GetById(
                     request.Id,
