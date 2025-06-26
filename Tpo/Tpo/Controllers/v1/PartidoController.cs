@@ -41,12 +41,13 @@ namespace Tpo.Controllers.v1
             return Ok(response);
         }
 
-        [HttpPost("MatchMaking/{id}", Name = "MatchMaking")]
-        public async Task<IActionResult> MatchMaking([FromRoute] int id)
+        [HttpGet("{id}", Name = "GetPartido")]
+        public async Task<IActionResult> GetPartido([FromRoute] int id)
         {
-            var query = new MatchMakingPartido.Query(id);
-            var response = await _mediator.Send(query);
-            return Ok(response);
+            var query = new GetPartido.Query(id);
+            var queryResponse = await mediator.Send(query);
+
+            return Ok(queryResponse);
         }
 
         [HttpGet(Name = "GetPartidos")]

@@ -54,7 +54,8 @@ public static partial class PartidoMapper
     public static JugadorDto ToJugadorDto(Jugador.Jugador x) => new()
     {
         Alias = x.Usuario.Alias,
-        UsuarioId = x.Usuario.Id
+        UsuarioId = x.Usuario.Id,
+        Confirmado = x.Confirmado
     };
 
     [UserMapping]

@@ -56,7 +56,7 @@ namespace Tpo.Controllers.v1
         }
 
         [HttpGet("{id}", Name = "GetUsuario")]
-        public async Task<IActionResult> GetList([FromRoute] int id)
+        public async Task<IActionResult> GetId([FromRoute] int id)
         {
             var query = new GetUsuario.Query(id);
             var queryResponse = await mediator.Send(query);
