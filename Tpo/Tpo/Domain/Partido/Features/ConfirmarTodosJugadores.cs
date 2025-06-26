@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Tpo.Databases;
-using Tpo.Exceptions;
 
 namespace Tpo.Domain.Partido.Features;
 
@@ -17,9 +16,6 @@ public static class ConfirmarTodosJugadores
                 .Include(j => j.Partido)
                 .Where(j => j.PartidoId == request.PartidoId)
                 .ToListAsync(cancellationToken);
-
-            if (!jugadores.Any())
-                throw new NotFoundException("No hay jugadores en el partido.");
 
             foreach (var jugador in jugadores)
                 jugador.Confirmar();

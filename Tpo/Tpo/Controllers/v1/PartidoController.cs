@@ -41,22 +41,6 @@ namespace Tpo.Controllers.v1
             return Ok(response);
         }
 
-        [HttpPost("MatchMaking/{id}", Name = "MatchMaking")]
-        public async Task<IActionResult> MatchMaking([FromRoute] int id)
-        {
-            var command = new MatchMakingPartido.Command(id);
-            var response = await _mediator.Send(command);
-            return Ok(response);
-        }
-
-        [HttpPost("Cancelar/{id}", Name = "CancelarPatido")]
-        public async Task<IActionResult> CancelarPartido([FromRoute] int id)
-        {
-            var command = new CancelPartido.Command(id);
-            await _mediator.Send(command);
-            return Ok();
-        }
-
         [HttpGet("{id}", Name = "GetPartido")]
         public async Task<IActionResult> GetPartido([FromRoute] int id)
         {

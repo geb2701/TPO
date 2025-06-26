@@ -17,7 +17,7 @@ public static class GetUsuario
                 request.Id,
                 true,
                 cancellationToken,
-                q => q.Include(u => u.Habilidades).ThenInclude(h => h.Deporte)
+                q => q.Include(u => u.Habilidades).ThenInclude(h => h.Deporte).Include(u => u.Participante).ThenInclude(p => p.Partido).ThenInclude(p => p.Deporte)
             );
 
             return entity?.ToUsuarioDto();

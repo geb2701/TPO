@@ -14,6 +14,12 @@ namespace Tpo.Databases.EntityConfigurations
 
             builder.HasKey(x => x.Id);
 
+            builder.Property(x => x.Alias)
+                .IsRequired();
+
+            builder.HasIndex(x => x.Alias)
+                .IsUnique();
+
             builder
                 .HasMany(u => u.Habilidades)
                 .WithOne(ud => ud.Usuario)

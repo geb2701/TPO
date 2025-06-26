@@ -18,10 +18,7 @@ public static class ConfirmarPropio
 
             var jugador = await db.Jugador
                 .Include(j => j.Partido)
-                .FirstOrDefaultAsync(j => j.UsuarioId == usuarioId && j.PartidoId == request.PartidoId, cancellationToken);
-
-            if (jugador is null)
-                throw new NotFoundException("No estás anotado en este partido.");
+                .FirstOrDefaultAsync(j => j.UsuarioId == usuarioId && j.PartidoId == request.PartidoId, cancellationToken) ?? throw new NotFoundException("No estás anotado en este partido.");
 
             if (!jugador.Confirmar())
                 throw new ValidationException("Ya confirmado o el estado no lo permite.");
