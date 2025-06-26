@@ -4,7 +4,7 @@
     {
         public void Notificar(Usuario.Usuario usuario, string mensaje)
         {
-            // no hace nada
+            // el usuario decide no notificar
         }
     }
 }

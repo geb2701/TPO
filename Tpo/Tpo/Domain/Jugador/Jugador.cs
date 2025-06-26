@@ -27,7 +27,7 @@ namespace Tpo.Domain.Jugador
         }
         public void NotificarCambioEstado(string nuevoEstado, Partido.Partido partido)
         {
-            string mensaje = $"El partido '{partido.Deporte}' cambió a: {nuevoEstado}";
+            string mensaje = $"{Usuario.Alias} cambió el partido '{partido.Id}' a: {nuevoEstado}";
             var notificador = Notificaciones.NotificadorFactory.CrearNotificador(Usuario.TipoNotificacion);
             notificador.Notificar(Usuario, mensaje);
         }
