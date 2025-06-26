@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Tpo.Databases;
+using SharedKernel.Databases;
+using Tpo.Domain.Partido.Services;
 
 namespace Tpo.Domain.Partido.Features;
 
@@ -8,19 +9,21 @@ public static class ConfirmarTodosJugadores
 {
     public sealed record Command(int PartidoId) : IRequest;
 
-    public sealed class Handler(TpoDbContext db) : IRequestHandler<Command>
+    public sealed class Handler(IPartidoRepository repository, IUnitOfWork unitOfWork) : IRequestHandler<Command>
     {
         public async Task Handle(Command request, CancellationToken cancellationToken)
         {
-            var jugadores = await db.Jugador
-                .Include(j => j.Partido)
-                .Where(j => j.PartidoId == request.PartidoId)
-                .ToListAsync(cancellationToken);
+            var partido = await repository.GetById(
+                request.PartidoId,
+                true,
+                cancellationToken,
+                q => q.Include(p => p.Jugadores).ThenInclude(j => j.Usuario).Include(p => p.Deporte)
+            );
 
-            foreach (var jugador in jugadores)
+            foreach (var jugador in partido.Jugadores)
                 jugador.Confirmar();
 
-            await db.SaveChangesAsync(cancellationToken);
+            await unitOfWork.CommitChanges(cancellationToken);
         }
     }
 }

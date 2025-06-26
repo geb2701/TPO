@@ -1,12 +1,15 @@
 ﻿using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using SharedKernel.Databases;
 using Tpo.Domain.Deporte.Services;
 using Tpo.Domain.Partido.Dtos;
 using Tpo.Domain.Partido.Mappings;
 using Tpo.Domain.Partido.Services;
+using Tpo.Domain.Usuario.Services;
 using Tpo.Exceptions;
 using Tpo.Extensions.Application;
+using Tpo.Services;
 
 namespace Tpo.Domain.Partido.Features;
 
@@ -37,7 +40,7 @@ public class AddPartidoUbicacion
         }
     }
 
-    public sealed class Handler(IPartidoRepository repository, IUnitOfWork unitOfWork, IDeporteRepository deporteRepository,
+    public sealed class Handler(IPartidoRepository repository, IUnitOfWork unitOfWork, IDeporteRepository deporteRepository, IUsuarioRepository usuarioRepository, ICurrentUsuarioService currentUsuarioService
                 AddPartidoValidator validator) : IRequestHandler<Command, PartidoDto>
     {
         public async Task<PartidoDto> Handle(Command request, CancellationToken cancellationToken)
@@ -48,6 +51,18 @@ public class AddPartidoUbicacion
                 ?? throw new NotFoundException($"Deporte con ID {request.Dto.DeporteId} no encontrado.");
             var model = request.Dto.ToPartidoForCreation(deporte);
             var entity = Partido.Create(model);
+
+            var usuario = await usuarioRepository.GetById(
+                currentUsuarioService.GetUsuarioId(),
+                true,
+                cancellationToken,
+                x => x.Include(u => u.Habilidades)
+                      .Include(u => u.Participante)
+                          .ThenInclude(p => p.Partido)
+                              .ThenInclude(pa => pa.Deporte)
+            );
+
+            entity.AgregarJugador(usuario);
 
             await repository.Add(entity, cancellationToken);
             await unitOfWork.CommitChanges(cancellationToken);

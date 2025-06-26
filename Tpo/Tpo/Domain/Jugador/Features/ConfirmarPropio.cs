@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Tpo.Databases;
+using SharedKernel.Databases;
+using Tpo.Domain.Partido.Services;
 using Tpo.Exceptions;
 using Tpo.Services;
 
@@ -10,20 +11,22 @@ public static class ConfirmarPropio
 {
     public sealed record Command(int PartidoId) : IRequest;
 
-    public sealed class Handler(TpoDbContext db, ICurrentUsuarioService currentUser) : IRequestHandler<Command>
+    public sealed class Handler(ICurrentUsuarioService currentUser, IPartidoRepository partidoRepository, IUnitOfWork unitOfWork) : IRequestHandler<Command>
     {
         public async Task Handle(Command request, CancellationToken cancellationToken)
         {
-            var usuarioId = currentUser.GetUsuarioId();
+            var partido = await partidoRepository.GetById(
+                request.PartidoId,
+                true,
+                cancellationToken,
+                q => q.Include(p => p.Jugadores).ThenInclude(j => j.Usuario).Include(p => p.Deporte)
+            );
 
-            var jugador = await db.Jugador
-                .Include(j => j.Partido)
-                .FirstOrDefaultAsync(j => j.UsuarioId == usuarioId && j.PartidoId == request.PartidoId, cancellationToken) ?? throw new NotFoundException("No estás anotado en este partido.");
-
+            var jugador = partido.Jugadores.FirstOrDefault(j => j.UsuarioId == currentUser.GetUsuarioId()) ?? throw new NotFoundException("Jugador no encontrado en el partido.");
             if (!jugador.Confirmar())
                 throw new ValidationException("Ya confirmado o el estado no lo permite.");
 
-            await db.SaveChangesAsync(cancellationToken);
+            await unitOfWork.CommitChanges(cancellationToken);
         }
     }
 }

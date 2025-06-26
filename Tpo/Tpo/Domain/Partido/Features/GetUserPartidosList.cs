@@ -18,7 +18,8 @@ public static class GetUserPartidosList
     {
         public async Task<PagedList<PartidoDto>> Handle(Query request, CancellationToken cancellationToken)
         {
-            var collection = repository.Query(cancellationToken: cancellationToken, includes: x => x.Include(y => y.Jugadores).ThenInclude(y => y.Usuario).Include(y => y.Deporte));
+            var collection = repository.Query(cancellationToken: cancellationToken, includes: x => x.Include(y => y.Jugadores).ThenInclude(y => y.Usuario).Include(y => y.Deporte))
+                .Where(x => x.Estado is NecesitamosJugadoresState);
 
             var usuario = await usuarioRepository.GetById(
                 currentUsuarioService.GetUsuarioId(),
