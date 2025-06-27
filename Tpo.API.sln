@@ -9,6 +9,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tpo", "Tpo", "{7C1FABC4-B16
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tpo", "Tpo\Tpo\Tpo.csproj", "{9439065E-0CC8-41CB-8B1C-55BE4B44FE1F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tpo.Test", "Tpo.Test\Tpo.Test.csproj", "{6BA10D74-A7B9-49CD-B168-056542413B03}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,10 @@ Global
 		{9439065E-0CC8-41CB-8B1C-55BE4B44FE1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9439065E-0CC8-41CB-8B1C-55BE4B44FE1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9439065E-0CC8-41CB-8B1C-55BE4B44FE1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BA10D74-A7B9-49CD-B168-056542413B03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BA10D74-A7B9-49CD-B168-056542413B03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BA10D74-A7B9-49CD-B168-056542413B03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BA10D74-A7B9-49CD-B168-056542413B03}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

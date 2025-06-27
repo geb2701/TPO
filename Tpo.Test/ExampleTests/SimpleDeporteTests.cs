@@ -1,8 +1,8 @@
-using Xunit;
 using FluentAssertions;
 using Tpo.Domain.Deporte.Models;
+using Xunit;
 
-namespace Tpo.Tests.ExampleTests;
+namespace Tpo.Test.ExampleTests;
 
 public class SimpleDeporteTests
 {
@@ -50,4 +50,4 @@ public class SimpleDeporteTests
         deporte.Should().NotBeNull();
         deporte.Nombre.Should().Be(nombreDeporte);
     }
-} 
+}

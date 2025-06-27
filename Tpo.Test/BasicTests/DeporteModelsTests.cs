@@ -1,8 +1,8 @@
-using Xunit;
 using FluentAssertions;
 using Tpo.Domain.Deporte.Models;
+using Xunit;
 
-namespace Tpo.Tests.BasicTests;
+namespace Tpo.Test.BasicTests;
 
 public class DeporteModelsTests
 {
@@ -93,4 +93,4 @@ public class DeporteModelsTests
         nombreProperty.Should().NotBeNull();
         nombreProperty.PropertyType.Should().Be(typeof(string));
     }
-} 
+}

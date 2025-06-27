@@ -1,9 +1,9 @@
-using Xunit;
 using FluentAssertions;
-using Tpo.Domain.Usuario.Models;
 using Tpo.Domain;
+using Tpo.Domain.Usuario.Models;
+using Xunit;
 
-namespace Tpo.Tests.BasicTests;
+namespace Tpo.Test.BasicTests;
 
 public class UsuarioTests
 {
@@ -111,4 +111,4 @@ public class UsuarioTests
         usuarioCreation.Alias.Should().Be("a");
         usuarioCreation.Email.Should().Be("e@e.c");
     }
-} 
+}

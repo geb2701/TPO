@@ -1,8 +1,8 @@
-using Xunit;
 using FluentAssertions;
 using Tpo.Domain;
+using Xunit;
 
-namespace Tpo.Tests.BasicTests;
+namespace Tpo.Test.BasicTests;
 
 public class EnumsTests
 {
@@ -101,4 +101,4 @@ public class EnumsTests
         // Assert
         valores.Should().OnlyHaveUniqueItems();
     }
-} 
+}

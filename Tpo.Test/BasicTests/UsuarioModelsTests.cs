@@ -1,9 +1,9 @@
-using Xunit;
 using FluentAssertions;
-using Tpo.Domain.Usuario.Models;
 using Tpo.Domain;
+using Tpo.Domain.Usuario.Models;
+using Xunit;
 
-namespace Tpo.Tests.BasicTests;
+namespace Tpo.Test.BasicTests;
 
 public class UsuarioModelsTests
 {
@@ -112,4 +112,4 @@ public class UsuarioModelsTests
         type.GetProperty("Ubicacion").Should().NotBeNull();
         type.GetProperty("TipoNotificacion").Should().NotBeNull();
     }
-} 
+}

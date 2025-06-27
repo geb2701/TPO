@@ -1,10 +1,9 @@
-using Xunit;
 using FluentAssertions;
-using Tpo.Domain.Partido.Models;
 using Tpo.Domain;
-using System;
+using Tpo.Domain.Partido.Models;
+using Xunit;
 
-namespace Tpo.Tests.BasicTests;
+namespace Tpo.Test.BasicTests;
 
 public class PartidoTests
 {
@@ -124,4 +123,4 @@ public class PartidoTests
         // Assert
         partidoCreation.Ubicacion.Should().Be(ubicacion);
     }
-} 
+}

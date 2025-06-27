@@ -1,9 +1,8 @@
-using Xunit;
 using FluentAssertions;
 using Tpo.Exceptions;
-using System;
+using Xunit;
 
-namespace Tpo.Tests.BasicTests;
+namespace Tpo.Test.BasicTests;
 
 public class ExceptionsBasicTests
 {
@@ -71,4 +70,4 @@ public class ExceptionsBasicTests
         // Assert
         exception.Message.Should().Be(mensaje);
     }
-} 
+}

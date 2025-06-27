@@ -1,9 +1,8 @@
-using Xunit;
 using FluentAssertions;
-using Tpo.Domain.Deporte;
 using Tpo.Domain.Deporte.Models;
+using Xunit;
 
-namespace Tpo.Tests.Domain.Deporte;
+namespace Tpo.Test.Domain.Deporte;
 
 public class DeporteDomainTests
 {
@@ -89,4 +88,4 @@ public class DeporteDomainTests
         // Assert
         deporte.UsuariosDeportes.Should().BeNull();
     }
-} 
+}

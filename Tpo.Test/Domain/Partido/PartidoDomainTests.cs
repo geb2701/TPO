@@ -1,12 +1,11 @@
-using Xunit;
 using FluentAssertions;
+using Moq;
+using Tpo.Domain;
 using Tpo.Domain.Partido;
 using Tpo.Domain.Partido.Models;
-using Tpo.Domain;
-using System;
-using Moq;
+using Xunit;
 
-namespace Tpo.Tests.Domain.Partido;
+namespace Tpo.Test.Domain.Partido;
 
 public class PartidoDomainTests
 {
@@ -16,7 +15,7 @@ public class PartidoDomainTests
         // Arrange
         var deporteMock = new Mock<Tpo.Domain.Deporte.Deporte>();
         var estrategiaMock = new Mock<IEstrategiaEmparejamiento>();
-        
+
         var partidoCreation = new PartidoForCreation
         {
             FechaHora = DateTime.Now.AddDays(7),
@@ -49,7 +48,7 @@ public class PartidoDomainTests
         // Arrange
         var deporteMock = new Mock<Tpo.Domain.Deporte.Deporte>();
         var estrategiaMock = new Mock<IEstrategiaEmparejamiento>();
-        
+
         var partidoCreation = new PartidoForCreation
         {
             FechaHora = DateTime.Now,
@@ -72,7 +71,7 @@ public class PartidoDomainTests
         // Arrange
         var deporteMock = new Mock<Tpo.Domain.Deporte.Deporte>();
         var estrategiaMock = new Mock<IEstrategiaEmparejamiento>();
-        
+
         var partidoCreation = new PartidoForCreation
         {
             FechaHora = DateTime.Now,
@@ -95,7 +94,7 @@ public class PartidoDomainTests
         // Arrange
         var deporteMock = new Mock<Tpo.Domain.Deporte.Deporte>();
         var estrategiaMock = new Mock<IEstrategiaEmparejamiento>();
-        
+
         var partidoCreation = new PartidoForCreation
         {
             FechaHora = DateTime.Now,
@@ -119,7 +118,7 @@ public class PartidoDomainTests
         // Arrange
         var deporteMock = new Mock<Tpo.Domain.Deporte.Deporte>();
         var estrategiaMock = new Mock<IEstrategiaEmparejamiento>();
-        
+
         var partidoCreation = new PartidoForCreation
         {
             FechaHora = DateTime.Now,
@@ -143,7 +142,7 @@ public class PartidoDomainTests
         // Arrange
         var deporteMock = new Mock<Tpo.Domain.Deporte.Deporte>();
         var estrategiaMock = new Mock<IEstrategiaEmparejamiento>();
-        
+
         var partidoCreation = new PartidoForCreation
         {
             FechaHora = DateTime.Now,
@@ -160,4 +159,4 @@ public class PartidoDomainTests
         // Assert
         resultado.Should().BeTrue(); // Todos (cero) jugadores están confirmados
     }
-} 
+}

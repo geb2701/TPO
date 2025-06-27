@@ -1,8 +1,8 @@
-using Xunit;
 using FluentAssertions;
 using Tpo.Domain.Partido.Models;
+using Xunit;
 
-namespace Tpo.Tests.BasicTests;
+namespace Tpo.Test.BasicTests;
 
 public class PartidoModelsTests
 {
@@ -31,4 +31,4 @@ public class PartidoModelsTests
         // Assert
         properties.Should().NotBeNull();
     }
-} 
+}

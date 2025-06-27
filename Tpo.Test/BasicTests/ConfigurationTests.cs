@@ -1,8 +1,8 @@
-using Xunit;
 using FluentAssertions;
 using Tpo.Configurations;
+using Xunit;
 
-namespace Tpo.Tests.BasicTests;
+namespace Tpo.Test.BasicTests;
 
 public class ConfigurationTests
 {
@@ -22,7 +22,7 @@ public class ConfigurationTests
     {
         // Arrange
         var connectionString = "Server=localhost;Database=TpoDb;User=sa;Password=123456";
-        
+
         // Act
         var options = new ConnectionStringOptions
         {
@@ -73,4 +73,4 @@ public class ConfigurationTests
         options.Tpo.Should().NotBeNull();
         options.Tpo.Should().Be(string.Empty);
     }
-} 
+}

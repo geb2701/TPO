@@ -1,12 +1,12 @@
 using Bogus;
 using Tpo.Domain;
 using Tpo.Domain.Deporte.Models;
-using Tpo.Domain.Usuario.Models;
-using Tpo.Domain.Partido.Models;
-using Tpo.Domain.UsuarioDeporte.Models;
 using Tpo.Domain.Partido;
+using Tpo.Domain.Partido.Models;
+using Tpo.Domain.Usuario.Models;
+using Tpo.Domain.UsuarioDeporte.Models;
 
-namespace Tpo.Tests.TestHelpers;
+namespace Tpo.Test.TestHelpers;
 
 public static class TestDataBuilder
 {
@@ -38,7 +38,7 @@ public static class TestDataBuilder
         return usuario;
     }
 
-    public static Tpo.Domain.Partido.Partido CreatePartido(
+    public static Partido CreatePartido(
         Tpo.Domain.Deporte.Deporte? deporte = null,
         DateTime? fechaHora = null,
         string? ubicacion = null,
@@ -47,7 +47,7 @@ public static class TestDataBuilder
         NivelHabilidad? nivelMaximo = null,
         IEstrategiaEmparejamiento? estrategia = null)
     {
-        return Tpo.Domain.Partido.Partido.Create(new PartidoForCreation
+        return Partido.Create(new PartidoForCreation
         {
             FechaHora = fechaHora ?? DateTime.Now.AddDays(_faker.Random.Int(1, 30)),
             Ubicacion = ubicacion ?? _faker.Address.StreetAddress(),
@@ -56,7 +56,7 @@ public static class TestDataBuilder
             NivelMinimo = nivelMinimo ?? NivelHabilidad.Principiante,
             NivelMaximo = nivelMaximo ?? NivelHabilidad.Experto,
             PartidosMinimosJugados = _faker.Random.Int(0, 5),
-            EstrategiaEmparejamiento = estrategia ?? new Tpo.Domain.Partido.EmparejamientoPorNivel()
+            EstrategiaEmparejamiento = estrategia ?? new EmparejamientoPorNivel()
         });
     }
 
@@ -81,4 +81,4 @@ public static class TestDataBuilder
             idProperty.SetValue(entity, id);
         }
     }
-} 
+}
