@@ -40,7 +40,7 @@ public class AddPartidoUbicacion
         }
     }
 
-    public sealed class Handler(IPartidoRepository repository, IUnitOfWork unitOfWork, IDeporteRepository deporteRepository, IUsuarioRepository usuarioRepository, ICurrentUsuarioService currentUsuarioService
+    public sealed class Handler(IPartidoRepository repository, IUnitOfWork unitOfWork, IDeporteRepository deporteRepository, IUsuarioRepository usuarioRepository, ICurrentUsuarioService currentUsuarioService,
                 AddPartidoValidator validator) : IRequestHandler<Command, PartidoDto>
     {
         public async Task<PartidoDto> Handle(Command request, CancellationToken cancellationToken)
